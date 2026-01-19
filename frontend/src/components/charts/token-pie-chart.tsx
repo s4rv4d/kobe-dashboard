@@ -6,20 +6,19 @@ import {
   Cell,
   ResponsiveContainer,
   Tooltip,
-  Legend,
 } from 'recharts'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatUSD } from '@/lib/utils/format'
 import type { AllocationItem } from '@/types'
 
+// Luxury gold/amber palette
 const COLORS = [
-  '#3b82f6',
-  '#22c55e',
-  '#eab308',
-  '#ef4444',
-  '#8b5cf6',
-  '#ec4899',
-  '#6b7280',
+  '#fbbf24', // amber-400
+  '#f59e0b', // amber-500
+  '#d97706', // amber-600
+  '#b45309', // amber-700
+  '#92400e', // amber-800
+  '#78350f', // amber-900
+  '#525252', // neutral-600
 ]
 
 interface ChartData {
@@ -57,16 +56,59 @@ interface TokenPieChartProps {
   allocation: AllocationItem[]
 }
 
+interface TooltipPayloadItem {
+  name: string
+  value: number
+  payload: ChartData
+}
+
+interface CustomTooltipProps {
+  active?: boolean
+  payload?: TooltipPayloadItem[]
+}
+
+function CustomTooltip({ active, payload }: CustomTooltipProps) {
+  if (!active || !payload?.length) return null
+
+  const data = payload[0].payload
+
+  return (
+    <div className="glass-card px-3 py-2 text-sm">
+      <p className="font-medium">{data.symbol}</p>
+      <p className="font-mono text-amber-400">{formatUSD(data.valueUsd)}</p>
+      <p className="text-muted-foreground text-xs">
+        {data.percentage.toFixed(1)}%
+      </p>
+    </div>
+  )
+}
+
+interface LegendItemProps {
+  color: string
+  symbol: string
+  percentage: number
+}
+
+function LegendItem({ color, symbol, percentage }: LegendItemProps) {
+  return (
+    <div className="flex items-center gap-2 text-sm">
+      <div
+        className="h-2.5 w-2.5 rounded-full"
+        style={{ backgroundColor: color }}
+      />
+      <span className="text-muted-foreground">{symbol}</span>
+      <span className="font-mono text-xs ml-auto">{percentage.toFixed(1)}%</span>
+    </div>
+  )
+}
+
 export function TokenPieChart({ allocation }: TokenPieChartProps) {
   const grouped = groupSmallAllocations(allocation, 2)
 
   return (
-    <Card className="p-0">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg">Portfolio Allocation</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ResponsiveContainer width="100%" height={280}>
+    <div className="glass-card p-5">
+      <div className="flex flex-col items-center">
+        <ResponsiveContainer width="100%" height={200}>
           <PieChart>
             <Pie
               data={grouped}
@@ -74,26 +116,35 @@ export function TokenPieChart({ allocation }: TokenPieChartProps) {
               nameKey="symbol"
               cx="50%"
               cy="50%"
-              innerRadius={60}
-              outerRadius={100}
-              paddingAngle={2}
+              innerRadius={55}
+              outerRadius={85}
+              paddingAngle={3}
+              strokeWidth={0}
             >
               {grouped.map((entry, i) => (
-                <Cell key={entry.symbol} fill={COLORS[i % COLORS.length]} />
+                <Cell
+                  key={entry.symbol}
+                  fill={COLORS[i % COLORS.length]}
+                  className="transition-opacity hover:opacity-80"
+                />
               ))}
             </Pie>
-            <Tooltip
-              formatter={(value) => formatUSD(Number(value))}
-              contentStyle={{
-                backgroundColor: 'hsl(var(--card))',
-                border: '1px solid hsl(var(--border))',
-                borderRadius: '8px',
-              }}
-            />
-            <Legend />
+            <Tooltip content={<CustomTooltip />} />
           </PieChart>
         </ResponsiveContainer>
-      </CardContent>
-    </Card>
+
+        {/* Custom Legend */}
+        <div className="w-full pt-4 border-t border-border/50 mt-2 space-y-2">
+          {grouped.map((item, i) => (
+            <LegendItem
+              key={item.symbol}
+              color={COLORS[i % COLORS.length]}
+              symbol={item.symbol}
+              percentage={item.percentage}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
   )
 }

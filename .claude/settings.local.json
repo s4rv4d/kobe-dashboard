@@ -1,5 +1,5 @@
 {
   "permissions": {
-    "allow": []
+    "allow": ["Bash(pnpm build:*)", "Skill(frontend-design)"]
   }
 }

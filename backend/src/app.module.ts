@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { RedisModule } from '@songkeys/nestjs-redis'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
-import { ProvidersModule } from './providers/providers.module'
-import { PortfolioModule } from './portfolio/portfolio.module'
-import { validateEnv } from './config/env.validation'
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RedisModule } from '@songkeys/nestjs-redis';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { ProvidersModule } from './providers/providers.module';
+import { PortfolioModule } from './portfolio/portfolio.module';
+import { validateEnv } from './config/env.validation';
 
 @Module({
   imports: [

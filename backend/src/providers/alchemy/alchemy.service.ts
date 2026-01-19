@@ -1,29 +1,38 @@
-import { Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { Alchemy, Network } from 'alchemy-sdk'
-import { TokenBalance, NftItem, TokenMetadata } from './alchemy.types'
-import { alchemyLimiter } from '../../common/rate-limiter'
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Alchemy, Network } from 'alchemy-sdk';
+import { TokenBalance, NftItem, TokenMetadata } from './alchemy.types';
+import { alchemyLimiter } from '../../common/rate-limiter';
 
 @Injectable()
 export class AlchemyService {
-  private alchemy: Alchemy
+  private alchemy: Alchemy;
 
   constructor(private configService: ConfigService) {
     this.alchemy = new Alchemy({
       apiKey: this.configService.get<string>('ALCHEMY_API_KEY'),
       network: Network.ETH_MAINNET,
-    })
+    });
+  }
+
+  async getEthBalance(address: string): Promise<string> {
+    return alchemyLimiter.schedule(async () => {
+      const balance = await this.alchemy.core.getBalance(address);
+      return balance.toString();
+    });
   }
 
   async getTokenBalances(address: string): Promise<TokenBalance[]> {
     return alchemyLimiter.schedule(async () => {
-      const balances = await this.alchemy.core.getTokenBalances(address)
+      const balances = await this.alchemy.core.getTokenBalances(address);
 
       const tokensWithMetadata = await Promise.all(
         balances.tokenBalances
           .filter((b) => b.tokenBalance && BigInt(b.tokenBalance) > 0n)
           .map(async (balance) => {
-            const metadata = await this.getTokenMetadata(balance.contractAddress)
+            const metadata = await this.getTokenMetadata(
+              balance.contractAddress,
+            );
             return {
               contractAddress: balance.contractAddress,
               balance: balance.tokenBalance || '0',
@@ -31,12 +40,12 @@ export class AlchemyService {
               name: metadata.name,
               symbol: metadata.symbol,
               logo: metadata.logo,
-            }
-          })
-      )
+            };
+          }),
+      );
 
-      return tokensWithMetadata
-    })
+      return tokensWithMetadata;
+    });
   }
 
   async getNfts(address: string): Promise<NftItem[]> {
@@ -44,7 +53,7 @@ export class AlchemyService {
       const nftsResponse = await this.alchemy.nft.getNftsForOwner(address, {
         excludeFilters: [],
         pageSize: 100,
-      })
+      });
 
       return nftsResponse.ownedNfts.map((nft) => ({
         contractAddress: nft.contract.address,
@@ -53,19 +62,20 @@ export class AlchemyService {
         description: nft.description,
         imageUrl: nft.image?.cachedUrl || nft.image?.originalUrl,
         collection: nft.contract.name || 'Unknown Collection',
-      }))
-    })
+      }));
+    });
   }
 
   async getTokenMetadata(contractAddress: string): Promise<TokenMetadata> {
     return alchemyLimiter.schedule(async () => {
-      const metadata = await this.alchemy.core.getTokenMetadata(contractAddress)
+      const metadata =
+        await this.alchemy.core.getTokenMetadata(contractAddress);
       return {
         name: metadata.name || 'Unknown',
         symbol: metadata.symbol || '???',
         decimals: metadata.decimals || 18,
         logo: metadata.logo || undefined,
-      }
-    })
+      };
+    });
   }
 }

@@ -1,6 +1,6 @@
-import { Module, forwardRef } from '@nestjs/common'
-import { CoinGeckoService } from './coingecko.service'
-import { CacheModule } from '../cache/cache.module'
+import { Module, forwardRef } from '@nestjs/common';
+import { CoinGeckoService } from './coingecko.service';
+import { CacheModule } from '../cache/cache.module';
 
 @Module({
   imports: [forwardRef(() => CacheModule)],

@@ -9,25 +9,31 @@ interface TokenRowProps {
 
 export function TokenRow({ token }: TokenRowProps) {
   return (
-    <TableRow>
-      <TableCell>
+    <TableRow className="border-b border-border/30 hover:bg-white/[0.02] transition-colors">
+      <TableCell className="py-4">
         <div className="flex items-center gap-3">
           <TokenIcon symbol={token.symbol} logoUrl={token.logoUrl} />
           <div>
-            <div className="font-medium">{token.name}</div>
-            <div className="text-sm text-muted-foreground">{token.symbol}</div>
+            <div className="font-medium text-foreground">{token.name}</div>
+            <div className="text-xs text-muted-foreground font-mono">
+              {token.symbol}
+            </div>
           </div>
         </div>
       </TableCell>
-      <TableCell className="text-right">{formatUSD(token.priceUsd)}</TableCell>
-      <TableCell className="text-right">
+      <TableCell className="text-right font-mono text-muted-foreground">
+        {formatUSD(token.priceUsd)}
+      </TableCell>
+      <TableCell className="text-right font-mono text-muted-foreground">
         {formatBalance(token.balanceFormatted)}
       </TableCell>
-      <TableCell className="text-right font-medium">
+      <TableCell className="text-right font-mono font-medium text-foreground">
         {formatUSD(token.valueUsd)}
       </TableCell>
-      <TableCell className="text-right text-muted-foreground">
-        {token.percentage.toFixed(1)}%
+      <TableCell className="text-right">
+        <span className="inline-flex px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 text-xs font-mono">
+          {token.percentage.toFixed(1)}%
+        </span>
       </TableCell>
     </TableRow>
   )

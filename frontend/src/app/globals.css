@@ -1,26 +1,327 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════
+   KOBE VAULT - Luxury Fintech Design System
+   ═══════════════════════════════════════════════════════════════ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core Palette */
+  --black-primary: #080808;
+  --black-secondary: #0d0d0d;
+  --black-elevated: #141414;
+  --black-surface: #1a1a1a;
+
+  /* Warm Gold Accent */
+  --gold-50: #fefce8;
+  --gold-100: #fef3c7;
+  --gold-200: #fde68a;
+  --gold-300: #fcd34d;
+  --gold-400: #fbbf24;
+  --gold-500: #f59e0b;
+  --gold-600: #d97706;
+
+  /* Semantic */
+  --background: var(--black-primary);
+  --foreground: #f5f5f5;
+  --muted: #737373;
+  --muted-foreground: #a3a3a3;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.03);
+
+  /* Card Glass */
+  --card: rgba(20, 20, 20, 0.7);
+  --card-foreground: #f5f5f5;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-glow: rgba(251, 191, 36, 0.03);
+
+  /* States */
+  --positive: #22c55e;
+  --positive-muted: rgba(34, 197, 94, 0.15);
+  --negative: #ef4444;
+  --negative-muted: rgba(239, 68, 68, 0.15);
+  --destructive: #ef4444;
+
+  /* Fonts */
+  --font-display: var(--font-display), system-ui, sans-serif;
+  --font-mono: var(--font-mono), monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --font-sans: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ═══════════════════════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  position: relative;
+  min-height: 100vh;
+
+  /* Subtle radial gradient for depth */
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(251, 191, 36, 0.04), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(251, 191, 36, 0.02), transparent);
+}
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════════ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Mono for numbers/data */
+.font-mono,
+[data-value] {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1, "ss01" 1;
+  letter-spacing: -0.01em;
+}
+
+/* Display numbers - large stats */
+.display-value {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Gold accent text */
+.text-gold {
+  color: var(--gold-400);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GLASS CARD SYSTEM
+   ═══════════════════════════════════════════════════════════════ */
+
+.glass-card {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 1px var(--border-subtle),
+    0 4px 24px -4px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 0 0 1px var(--border-subtle),
+    0 8px 32px -8px rgba(0, 0, 0, 0.6),
+    0 0 40px -20px var(--card-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
+}
+
+/* Stat card with accent glow */
+.stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-400), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stat-card:hover::before {
+  opacity: 0.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-gold {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px 4px rgba(251, 191, 36, 0.1);
+  }
+}
+
+.animate-in {
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-400 { animation-delay: 400ms; }
+
+/* Staggered children */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 75ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 225ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 375ms; }
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENT OVERRIDES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Table styling */
+table {
+  font-family: var(--font-display);
+}
+
+table th {
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+table td {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Selection */
+::selection {
+  background: rgba(251, 191, 36, 0.3);
+  color: white;
+}
+
+/* Focus states */
+:focus-visible {
+  outline: 2px solid var(--gold-400);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════ */
+
+.border-glow {
+  position: relative;
+}
+
+.border-glow::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--gold-500), transparent, var(--gold-600));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.border-glow:hover::after {
+  opacity: 0.5;
+}
+
+/* Badge variants */
+.badge-positive {
+  background: var(--positive-muted);
+  color: var(--positive);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.badge-negative {
+  background: var(--negative-muted);
+  color: var(--negative);
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }

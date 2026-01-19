@@ -1,5 +1,5 @@
-import { Module } from '@nestjs/common'
-import { AlchemyService } from './alchemy.service'
+import { Module } from '@nestjs/common';
+import { AlchemyService } from './alchemy.service';
 
 @Module({
   providers: [AlchemyService],

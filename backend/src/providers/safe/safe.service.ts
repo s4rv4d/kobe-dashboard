@@ -1,37 +1,51 @@
-import { Injectable } from '@nestjs/common'
-import { SafeInfo, SafeBalance, SafeCollectible } from './safe.types'
+import { Injectable } from '@nestjs/common';
+import { SafeInfo, SafeBalance, SafeCollectible } from './safe.types';
+import { ConfigService } from '@nestjs/config';
 
-const SAFE_API_BASE = 'https://safe-transaction-mainnet.safe.global/api/v1'
+const SAFE_API_BASE = 'https://safe-transaction-mainnet.safe.global/api/v1';
 
 @Injectable()
 export class SafeApiService {
+  constructor(private readonly configService: ConfigService) {}
+
   async getSafeInfo(address: string): Promise<SafeInfo> {
-    const res = await fetch(`${SAFE_API_BASE}/safes/${address}/`)
+    const res = await fetch(`${SAFE_API_BASE}/safes/${address}/`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${this.configService.get<string>('SAFE_API_KEY')}`,
+      },
+    });
 
     if (!res.ok) {
-      throw new Error(`Safe API error: ${res.status}`)
+      throw new Error(`Safe API error: ${res.status}`);
     }
 
-    const data = await res.json()
+    const data = await res.json();
     return {
       address: data.address,
       nonce: data.nonce,
       threshold: data.threshold,
       owners: data.owners,
       chainId: 1,
-    }
+    };
   }
 
   async getBalances(address: string): Promise<SafeBalance[]> {
     const res = await fetch(
       `${SAFE_API_BASE}/safes/${address}/balances/?trusted=true&exclude_spam=true`,
-    )
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.configService.get<string>('SAFE_API_KEY')}`,
+        },
+      },
+    );
 
     if (!res.ok) {
-      throw new Error(`Safe API error: ${res.status}`)
+      throw new Error(`Safe API error: ${res.status}`);
     }
 
-    const data = await res.json()
+    const data = await res.json();
     return data.map((item: Record<string, unknown>) => ({
       tokenAddress: item.tokenAddress || null,
       token: item.token
@@ -43,19 +57,25 @@ export class SafeApiService {
           }
         : null,
       balance: item.balance as string,
-    }))
+    }));
   }
 
   async getCollectibles(address: string): Promise<SafeCollectible[]> {
     const res = await fetch(
       `${SAFE_API_BASE}/safes/${address}/collectibles/?trusted=true&exclude_spam=true`,
-    )
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.configService.get<string>('SAFE_API_KEY')}`,
+        },
+      },
+    );
 
     if (!res.ok) {
-      throw new Error(`Safe API error: ${res.status}`)
+      throw new Error(`Safe API error: ${res.status}`);
     }
 
-    const data = await res.json()
+    const data = await res.json();
     return data.map((item: Record<string, unknown>) => ({
       address: item.address,
       tokenName: item.tokenName,
@@ -64,6 +84,6 @@ export class SafeApiService {
       name: item.name || `#${item.id}`,
       description: item.description || '',
       imageUri: item.imageUri || '',
-    }))
+    }));
   }
 }

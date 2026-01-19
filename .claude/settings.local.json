@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(nest new:*)",
+      "Bash(pnpm add:*)",
+      "Bash(npx create-next-app:*)",
+      "Bash(npx shadcn@latest init -y --defaults)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(pnpm exec tsc:*)",
+      "Bash(git -C /Users/sarvadshetty/Documents/startup/kobe-dash rm:*)",
+      "Bash(git -C /Users/sarvadshetty/Documents/startup/kobe-dash add frontend/)",
+      "Bash(git -C /Users/sarvadshetty/Documents/startup/kobe-dash status)",
+      "Bash(git -C /Users/sarvadshetty/Documents/startup/kobe-dash add .claude/settings.local.json)"
+    ]
+  }
+}

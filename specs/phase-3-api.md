@@ -283,11 +283,33 @@ backend/src/portfolio/
 
 ---
 
+## Implementation Status
+
+**Implemented:**
+- `GET /api/v1/health` - returns status, redis, uptime, version
+- `GET /api/v1/safe/:address/portfolio` - with allocation (top 5 + Others)
+- `GET /api/v1/safe/:address/tokens` - with sort/order query params
+- `GET /api/v1/safe/:address/nfts` - with collection/limit/offset params
+- Zod validation for all params/queries
+- AllExceptionsFilter for error handling
+
+**Not Implemented:**
+- `GET /api/v1/safe/:address` - SafeInfo endpoint (uses Alchemy directly)
+- 24h change data (hardcoded to 0)
+- NFT floor prices (not fetched)
+
+**TTL Values (Actual):**
+- Portfolio: 60s (PORTFOLIO_TTL)
+- Tokens: 30s (TOKENS_TTL)
+- NFTs: 120s (NFTS_TTL)
+- Prices: 120s (PRICE_TTL in CoinGeckoService)
+
+---
+
 ## Verification
 
-- [ ] `GET /api/v1/safe/:address` returns 200 with valid address
-- [ ] `GET /api/v1/safe/:address` returns 400 with invalid address
-- [ ] `/portfolio` aggregates data correctly
-- [ ] `/tokens` sorting works (value desc by default)
-- [ ] `/nfts` pagination works
-- [ ] Error responses follow standard format
+- [ ] ~~`GET /api/v1/safe/:address` returns 200 with valid address~~ (not implemented)
+- [x] `/portfolio` aggregates data correctly
+- [x] `/tokens` sorting works (value desc by default)
+- [x] `/nfts` pagination works
+- [x] Error responses follow standard format

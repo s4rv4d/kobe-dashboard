@@ -112,8 +112,15 @@ export function TokenPieChart({ allocation }: { allocation: AllocationItem[] }) 
 
 **File:** `frontend/src/components/tokens/token-list.tsx`
 
+**Pagination:** 5 items per page with Prev/Next buttons
+
 ```typescript
 export function TokenList({ tokens }: { tokens: Token[] }) {
+  const [page, setPage] = useState(0)
+  const ITEMS_PER_PAGE = 5
+  const totalPages = Math.ceil(tokens.length / ITEMS_PER_PAGE)
+  const paginatedTokens = tokens.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE)
+
   return (
     <Card>
       <Table>
@@ -127,11 +134,12 @@ export function TokenList({ tokens }: { tokens: Token[] }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tokens.map(token => (
+          {paginatedTokens.map(token => (
             <TokenRow key={token.address} token={token} />
           ))}
         </TableBody>
       </Table>
+      {/* Pagination controls: Prev/Next buttons with page indicator */}
     </Card>
   )
 }
@@ -169,13 +177,23 @@ export function TokenRow({ token }: { token: Token }) {
 
 **File:** `frontend/src/components/nfts/nft-grid.tsx`
 
+**Pagination:** 10 items per page (2 rows x 5 cols), fixed min-height container (420px), Prev/Next buttons
+
 ```typescript
 export function NftGrid({ nfts }: { nfts: Nft[] }) {
+  const [page, setPage] = useState(0)
+  const ITEMS_PER_PAGE = 10
+  const totalPages = Math.ceil(nfts.length / ITEMS_PER_PAGE)
+  const paginatedNfts = nfts.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE)
+
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-      {nfts.map(nft => (
-        <NftCard key={`${nft.contractAddress}-${nft.tokenId}`} nft={nft} />
-      ))}
+    <div>
+      <div className="min-h-[420px] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {paginatedNfts.map(nft => (
+          <NftCard key={`${nft.contractAddress}-${nft.tokenId}`} nft={nft} />
+        ))}
+      </div>
+      {/* Pagination controls: Prev/Next buttons with page indicator */}
     </div>
   )
 }
@@ -289,6 +307,8 @@ export function resolveIpfs(url: string): string {
 
 **File:** `frontend/src/components/skeletons.tsx`
 
+Skeletons match paginated layout with pagination button placeholders.
+
 ```typescript
 export function StatsSkeleton() {
   return (
@@ -303,19 +323,33 @@ export function StatsSkeleton() {
 export function TokenListSkeleton() {
   return (
     <div className="space-y-2">
+      {/* 5 rows matching pagination */}
       {Array.from({ length: 5 }).map((_, i) => (
         <Skeleton key={i} className="h-14" />
       ))}
+      {/* Pagination button placeholders */}
+      <div className="flex justify-center gap-2 pt-4">
+        <Skeleton className="h-9 w-20" />
+        <Skeleton className="h-9 w-20" />
+      </div>
     </div>
   )
 }
 
 export function NftGridSkeleton() {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <Skeleton key={i} className="aspect-square" />
-      ))}
+    <div>
+      {/* Fixed height container matching pagination */}
+      <div className="min-h-[420px] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <Skeleton key={i} className="aspect-square" />
+        ))}
+      </div>
+      {/* Pagination button placeholders */}
+      <div className="flex justify-center gap-2 pt-4">
+        <Skeleton className="h-9 w-20" />
+        <Skeleton className="h-9 w-20" />
+      </div>
     </div>
   )
 }
@@ -367,12 +401,66 @@ export default function DashboardPage() {
 
 ---
 
+## Implementation Status
+
+**Implemented:**
+- DashboardContent as main orchestrator (client component)
+- VaultStats with 4 StatCards
+- TokenPieChart with Recharts donut chart
+- TokenList/TokenRow with shadcn Table + pagination (5/page)
+- NftGrid/NftCard with image fallbacks + pagination (10/page, 420px min-height)
+- Skeletons: StatsSkeleton, ChartSkeleton, TokenListSkeleton, NftGridSkeleton (all match paginated layouts)
+- ErrorBoundary with ErrorMessage component
+- SectionHeader with icons
+
+**Additional Utilities:**
+- `formatCompactUSD` - formats large numbers as $1.23M, $4.56K
+
+**Hooks:**
+- usePortfolio (30s stale, 30s refetch)
+- useTokens (30s stale)
+- useNfts (60s stale)
+- useSafeInfo (not used - backend endpoint missing)
+
+**Components Structure (Actual):**
+```
+frontend/src/components/
+├── charts/
+│   └── token-pie-chart.tsx
+├── dashboard/
+│   └── dashboard-content.tsx
+├── nfts/
+│   ├── nft-card.tsx
+│   └── nft-grid.tsx
+├── stats/
+│   ├── stat-card.tsx
+│   └── vault-stats.tsx
+├── tokens/
+│   ├── token-icon.tsx
+│   ├── token-list.tsx
+│   └── token-row.tsx
+├── ui/                    # shadcn components
+│   ├── avatar.tsx
+│   ├── badge.tsx
+│   ├── button.tsx
+│   ├── card.tsx
+│   ├── skeleton.tsx
+│   ├── table.tsx
+│   └── tabs.tsx
+├── error-boundary.tsx
+└── skeletons.tsx
+```
+
+---
+
 ## Verification
 
-- [ ] VaultStats renders 4 cards with correct data
-- [ ] PieChart shows allocation with "Others" grouping
-- [ ] TokenList displays all tokens sorted by value
-- [ ] NftGrid renders images with fallbacks
-- [ ] Loading skeletons appear during fetch
-- [ ] Error boundaries catch and display errors
-- [ ] Mobile responsive layout works
+- [x] VaultStats renders 4 cards with correct data
+- [x] PieChart shows allocation with "Others" grouping
+- [x] TokenList displays all tokens sorted by value
+- [x] TokenList pagination (5/page) with Prev/Next
+- [x] NftGrid renders images with fallbacks
+- [x] NftGrid pagination (10/page) with fixed 420px min-height
+- [x] Loading skeletons match paginated layouts
+- [x] Error boundaries catch and display errors
+- [x] Mobile responsive layout works

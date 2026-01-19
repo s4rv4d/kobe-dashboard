@@ -214,10 +214,41 @@ backend/src/providers/
 
 ---
 
+## Implementation Status
+
+**Implemented:**
+- AlchemyService with getEthBalance, getTokenBalances, getNfts, getTokenMetadata
+- CoinGeckoService with getTokenPrice, getBatchPrices
+- CacheService with get, set, delete, getOrFetch
+- Rate limiters: alchemyLimiter (5 concurrent, 100ms), coingeckoLimiter (1 concurrent, 2000ms)
+
+**Not Implemented:**
+- SafeApiService (decided to use Alchemy directly for balance/NFT data)
+- Safe info endpoint removed from scope
+
+**Module Structure (Actual):**
+```
+backend/src/providers/
+├── providers.module.ts
+├── alchemy/
+│   ├── alchemy.module.ts
+│   ├── alchemy.service.ts
+│   └── alchemy.types.ts
+├── coingecko/
+│   ├── coingecko.module.ts
+│   ├── coingecko.service.ts
+│   └── coingecko.types.ts
+└── cache/
+    ├── cache.module.ts
+    └── cache.service.ts
+```
+
+---
+
 ## Verification
 
-- [ ] AlchemyService returns token balances for test address
-- [ ] CoinGeckoService returns ETH price
-- [ ] SafeService returns safe info
-- [ ] Cache hits work (check logs/metrics)
-- [ ] Rate limiting prevents 429 errors
+- [x] AlchemyService returns token balances for test address
+- [x] CoinGeckoService returns ETH price
+- [ ] ~~SafeService returns safe info~~ (not implemented)
+- [x] Cache hits work (check logs/metrics)
+- [x] Rate limiting prevents 429 errors

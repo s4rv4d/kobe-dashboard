@@ -214,3 +214,27 @@ railway rollback
 - [ ] CORS properly configured
 - [ ] Input validation on all endpoints
 - [ ] Error messages don't leak internals
+
+---
+
+## Implementation Status
+
+**CORS Config (Actual in main.ts):**
+```typescript
+app.enableCors({
+  origin: [
+    'http://localhost:3000',
+    'https://kobe-dash.vercel.app',
+    /\.vercel\.app$/,
+  ],
+  methods: ['GET'],
+  credentials: false,
+})
+```
+
+**Global Filters:**
+- AllExceptionsFilter applied via `app.useGlobalFilters()`
+
+**Deployment Files:**
+- `railway.toml` - for Railway backend deployment
+- `next.config.ts` - image domains configured

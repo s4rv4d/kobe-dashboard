@@ -176,9 +176,34 @@ export async function apiClient<T>(endpoint: string): Promise<T> {
 
 ---
 
+## Implementation Status
+
+**Completed:**
+- Backend NestJS setup with ConfigModule + Zod validation
+- Frontend Next.js 15 with shadcn/ui (New York style, Zinc base)
+- Redis integration via @songkeys/nestjs-redis
+- React Query provider setup
+- API client with success/error handling
+
+**Dependencies Installed:**
+
+Backend:
+- @nestjs/config, zod (env validation)
+- alchemy-sdk (not @safe-global/api-kit)
+- ioredis, @songkeys/nestjs-redis
+- bottleneck (rate limiting)
+
+Frontend:
+- @tanstack/react-query
+- recharts
+- lucide-react (icons)
+- shadcn components: card, table, avatar, badge, skeleton, tabs, button
+
+---
+
 ## Verification
 
-- [ ] `cd backend && pnpm start:dev` runs on :3001
-- [ ] `cd frontend && pnpm dev` runs on :3000
-- [ ] Backend env vars validated on startup
-- [ ] Frontend shadcn components render
+- [x] `cd backend && pnpm start:dev` runs on :3001
+- [x] `cd frontend && pnpm dev` runs on :3000
+- [x] Backend env vars validated on startup
+- [x] Frontend shadcn components render

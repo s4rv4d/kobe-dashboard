@@ -6,10 +6,14 @@ import { AppService } from './app.service';
 import { ProvidersModule } from './providers/providers.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
 import { VaultModule } from './vault/vault.module';
+import { AuthModule } from './auth/auth.module';
 import { validateEnv } from './config/env.validation';
+import { LoggerModule } from 'pino-nestjs';
 
 @Module({
   imports: [
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    LoggerModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       validate: validateEnv,
@@ -26,6 +30,7 @@ import { validateEnv } from './config/env.validation';
     ProvidersModule,
     PortfolioModule,
     VaultModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

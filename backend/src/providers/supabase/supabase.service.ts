@@ -56,4 +56,15 @@ export class SupabaseService {
     if (error) return null;
     return data?.value ?? null;
   }
+
+  async isAllowlisted(address: string): Promise<boolean> {
+    const { data, error } = await this.client
+      .from('contributions')
+      .select('address')
+      .ilike('address', address)
+      .limit(1);
+
+    if (error) return false;
+    return data !== null && data.length > 0;
+  }
 }

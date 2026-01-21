@@ -1,11 +1,19 @@
-import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  UseGuards,
+} from '@nestjs/common';
 import { VaultService } from './vault.service';
 import {
   vaultStatsResponseSchema,
   contributionsResponseSchema,
 } from './dto/vault.dto';
+import { JwtAuthGuard } from '../auth/auth.guard';
 
-@Controller('api/v1/vault')
+@Controller('vault')
+@UseGuards(JwtAuthGuard)
 export class VaultController {
   constructor(private vaultService: VaultService) {}
 

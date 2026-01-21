@@ -11,6 +11,8 @@ export const envSchema = z.object({
   SUPABASE_URL: z.string().url(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
   VAULT_ADDRESS: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
+  JWT_SECRET: z.string().min(32),
+  JWT_EXPIRY: z.string().default('7d'),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;

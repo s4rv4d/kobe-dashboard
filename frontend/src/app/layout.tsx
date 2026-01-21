@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Outfit, JetBrains_Mono } from 'next/font/google'
-import { QueryProvider } from '@/providers/query-provider'
+import { WalletProvider } from '@/providers/wallet-provider'
+import { AuthProvider } from '@/providers/auth-provider'
 import './globals.css'
 
 const outfit = Outfit({
@@ -31,7 +32,9 @@ export default function RootLayout({
         className={`${outfit.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <div className="noise-overlay" />
-        <QueryProvider>{children}</QueryProvider>
+        <WalletProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </WalletProvider>
       </body>
     </html>
   )

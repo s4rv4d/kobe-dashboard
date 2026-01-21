@@ -1,8 +1,10 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { PortfolioService } from './portfolio.service';
 import { tokenQuerySchema, nftQuerySchema } from './dto/portfolio.dto';
+import { JwtAuthGuard } from '../auth/auth.guard';
 
-@Controller('api/v1/safe')
+@Controller('safe')
+@UseGuards(JwtAuthGuard)
 export class PortfolioController {
   constructor(private portfolioService: PortfolioService) {}
 

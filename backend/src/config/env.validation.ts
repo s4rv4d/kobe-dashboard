@@ -8,6 +8,9 @@ export const envSchema = z.object({
   ALCHEMY_API_KEY: z.string().min(1),
   REDIS_URL: z.string().url(),
   COINGECKO_API_KEY: z.string().optional(),
+  SUPABASE_URL: z.string().url(),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+  VAULT_ADDRESS: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;

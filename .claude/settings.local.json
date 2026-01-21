@@ -1,5 +1,11 @@
 {
   "permissions": {
-    "allow": ["Bash(pnpm build:*)", "Skill(frontend-design)"]
+    "allow": [
+      "Bash(pnpm build:*)",
+      "Skill(frontend-design)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm tsc:*)",
+      "Bash(pnpm lint:*)"
+    ]
   }
 }

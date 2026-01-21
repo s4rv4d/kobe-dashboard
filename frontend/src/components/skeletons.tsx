@@ -100,3 +100,38 @@ export function NftGridSkeleton() {
     </div>
   );
 }
+
+export function ContributorsListSkeleton() {
+  return (
+    <div className="space-y-4">
+      <div className="glass-card overflow-hidden">
+        <div className="p-4 border-b border-border/50">
+          <div className="flex items-center gap-4">
+            {["Wallet", "Invested", "Current Value", "Equity", "Multiple"].map(
+              (_, i) => (
+                <Skeleton key={i} className="h-3 w-20 bg-white/5" />
+              )
+            )}
+          </div>
+        </div>
+        <div className="divide-y divide-border/30">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="p-4 flex items-center gap-4">
+              <Skeleton className="h-4 w-28 bg-white/5" />
+              <Skeleton className="h-4 w-20 bg-white/5 ml-auto" />
+              <Skeleton className="h-4 w-24 bg-white/5" />
+              <Skeleton className="h-5 w-14 rounded-md bg-white/5" />
+              <Skeleton className="h-5 w-14 rounded-md bg-white/5" />
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Pagination skeleton */}
+      <div className="flex items-center justify-center gap-4">
+        <Skeleton className="h-8 w-20 rounded-md bg-white/5" />
+        <Skeleton className="h-4 w-12 bg-white/5" />
+        <Skeleton className="h-8 w-20 rounded-md bg-white/5" />
+      </div>
+    </div>
+  );
+}

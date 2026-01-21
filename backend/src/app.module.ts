@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProvidersModule } from './providers/providers.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
+import { VaultModule } from './vault/vault.module';
 import { validateEnv } from './config/env.validation';
 
 @Module({
@@ -24,6 +25,7 @@ import { validateEnv } from './config/env.validation';
     }),
     ProvidersModule,
     PortfolioModule,
+    VaultModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@safe-global/api-kit": "^4.0.1",
     "@songkeys/nestjs-redis": "^11.0.0",
+    "@supabase/supabase-js": "^2.91.0",
     "alchemy-sdk": "^3.6.5",
     "bottleneck": "^2.19.5",
     "cache-manager": "^7.2.8",

@@ -59,3 +59,23 @@ export interface SafeInfo {
   owners: string[]
   chainId: number
 }
+
+export interface VaultStats {
+  currentValue: number
+  investedAmount: number
+  multiple: number
+  xirr: number
+}
+
+export interface Contributor {
+  address: string
+  investedAmount: number
+  currentValue: number
+  equityPercent: number
+  multiple: number
+}
+
+export interface ContributionsResponse {
+  contributors: Contributor[]
+  total: number
+}

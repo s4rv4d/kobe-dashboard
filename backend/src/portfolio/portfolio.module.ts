@@ -7,5 +7,6 @@ import { ProvidersModule } from '../providers/providers.module';
   imports: [ProvidersModule],
   controllers: [PortfolioController, HealthController],
   providers: [PortfolioService],
+  exports: [PortfolioService],
 })
 export class PortfolioModule {}

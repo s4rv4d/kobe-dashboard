@@ -1,35 +1,54 @@
-import { DollarSign, TrendingUp, Coins, Image } from 'lucide-react'
+import { DollarSign, Wallet, TrendingUp, Percent } from 'lucide-react'
 import { StatCard } from './stat-card'
 import { formatUSD } from '@/lib/utils/format'
 
 interface VaultStatsProps {
-  totalValue: number
-  change24h: number
-  tokenCount: number
-  nftCount: number
+  currentValue: number
+  investedAmount: number
+  multiple: number
+  xirr: number
+}
+
+function formatMultiple(value: number): string {
+  return `${value.toFixed(2)}x`
+}
+
+function formatXirr(value: number): string {
+  const percentage = value * 100
+  const sign = percentage >= 0 ? '+' : ''
+  return `${sign}${percentage.toFixed(1)}%`
 }
 
 export function VaultStats({
-  totalValue,
-  change24h,
-  tokenCount,
-  nftCount,
+  currentValue,
+  investedAmount,
+  multiple,
+  xirr,
 }: VaultStatsProps) {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
       <StatCard
-        title="Total Value"
-        value={formatUSD(totalValue)}
+        title="Current Value"
+        value={formatUSD(currentValue)}
         icon={DollarSign}
       />
       <StatCard
-        title="24h Change"
-        value={`${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%`}
-        variant={change24h >= 0 ? 'positive' : 'negative'}
+        title="Invested"
+        value={formatUSD(investedAmount)}
+        icon={Wallet}
+      />
+      <StatCard
+        title="Multiple"
+        value={formatMultiple(multiple)}
+        variant={multiple >= 1 ? 'positive' : 'negative'}
         icon={TrendingUp}
       />
-      <StatCard title="Tokens" value={tokenCount} icon={Coins} />
-      <StatCard title="NFTs" value={nftCount} icon={Image} />
+      <StatCard
+        title="XIRR"
+        value={formatXirr(xirr)}
+        variant={xirr >= 0 ? 'positive' : 'negative'}
+        icon={Percent}
+      />
     </div>
   )
 }

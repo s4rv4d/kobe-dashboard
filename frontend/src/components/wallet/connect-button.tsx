@@ -1,7 +1,5 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
-import { useConnection } from "wagmi";
 import { useAuth } from "@/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Wallet, Loader2 } from "lucide-react";

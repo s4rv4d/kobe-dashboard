@@ -1,9 +1,8 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
-import { useConnection, useConnectionEffect } from "wagmi";
+import { useConnection } from "wagmi";
 import { useAuth } from "@/providers/auth-provider";
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Wallet, Loader2 } from "lucide-react";
 
@@ -29,34 +28,28 @@ export function ConnectButton({ variant = "default" }: ConnectButtonProps) {
 
 function ConnectButtonInner({ variant = "default" }: ConnectButtonProps) {
   const { isAuthenticated, isLoading, login, error } = useAuth();
-  const connection = useConnection();
-  const hasRunRef = useRef(false);
+  // const connection = useConnection();
+  // const prevConnectedRef = useRef(false);
+  // const [loginAttempted, setLoginAttempted] = useState(false);
+  // const loginRef = useRef(login);
+  // loginRef.current = login;
 
-  useEffect(() => {
-    if (hasRunRef.current) return;
-    hasRunRef.current = true;
-    console.log(connection.isConnected, connection.status);
+  // useEffect(() => {
+  //   const justConnected = connection.isConnected && !prevConnectedRef.current;
+  //   prevConnectedRef.current = connection.isConnected;
 
-    const startLogin = async () => {
-      try {
-        await login();
-      } catch (err) {
-        console.error("Login failed in ConnectButton:", err);
-      }
-    };
+  //   // Reset when disconnected
+  //   if (!connection.isConnected) {
+  //     setLoginAttempted(false);
+  //     return;
+  //   }
 
-    if (
-      isAuthenticated === false &&
-      isLoading === false &&
-      connection.isConnected === true
-    ) {
-      console.log("Attempting login from ConnectButton");
-      startLogin();
-    }
-    return () => {
-      hasRunRef.current = false;
-    };
-  }, [connection]);
+  //   // Only trigger login on fresh connection
+  //   if (justConnected && !isAuthenticated && !isLoading && !loginAttempted) {
+  //     setLoginAttempted(true);
+  //     loginRef.current().catch(() => setLoginAttempted(false));
+  //   }
+  // }, [connection.isConnected, isAuthenticated, isLoading, loginAttempted]);
 
   return (
     <RainbowConnectButton.Custom>
@@ -96,6 +89,15 @@ function ConnectButtonInner({ variant = "default" }: ConnectButtonProps) {
                   >
                     <Wallet className="h-4 w-4" />
                     Connect Wallet
+                  </Button>
+                );
+              }
+
+              if (!isAuthenticated) {
+                return (
+                  <Button onClick={login} variant="outline" className="gap-2">
+                    <Wallet className="h-4 w-4" />
+                    Sign In
                   </Button>
                 );
               }

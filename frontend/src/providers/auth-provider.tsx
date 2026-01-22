@@ -104,8 +104,6 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
   };
 
   const login = useCallback(async () => {
-    console.log("Starting login process");
-
     if (!address || !isConnected) {
       setState((prev) => ({ ...prev, error: "Wallet not connected" }));
       return;
@@ -128,9 +126,6 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
 
       const data = await res.json();
 
-      console.log("Auth response:", data);
-      console.log(res);
-
       if (!res.ok || !data.success) {
         if (res.status === 403) {
           router.push("/unauthorized");
@@ -148,7 +143,6 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
 
       router.push("/dashboard");
     } catch (error) {
-      console.log(error);
       setState((prev) => ({
         ...prev,
         isLoading: false,

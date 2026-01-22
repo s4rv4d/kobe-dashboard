@@ -27,33 +27,7 @@ export function ConnectButton({ variant = "default" }: ConnectButtonProps) {
 }
 
 function ConnectButtonInner({ variant = "default" }: ConnectButtonProps) {
-  const { isAuthenticated, isLoading, login, error } = useAuth();
-  const connection = useConnection();
-  // const prevConnectedRef = useRef(false);
-  // const [loginAttempted, setLoginAttempted] = useState(false);
-  // const loginRef = useRef(login);
-  // loginRef.current = login;
-
-  // useEffect(() => {
-  //   const justConnected = connection.isConnected && !prevConnectedRef.current;
-  //   prevConnectedRef.current = connection.isConnected;
-
-  //   // Reset when disconnected
-  //   if (!connection.isConnected) {
-  //     setLoginAttempted(false);
-  //     return;
-  //   }
-
-  //   // Only trigger login on fresh connection
-  //   if (justConnected && !isAuthenticated && !isLoading && !loginAttempted) {
-  //     setLoginAttempted(true);
-  //     loginRef.current().catch(() => setLoginAttempted(false));
-  //   }
-  // }, [connection.isConnected, isAuthenticated, isLoading, loginAttempted]);
-
-  // useEffect(() => {
-  //   console.log("Connection changed:", connection.address);
-  // }, [connection]);
+  const { isLoading, login, error } = useAuth();
 
   return (
     <RainbowConnectButton.Custom>

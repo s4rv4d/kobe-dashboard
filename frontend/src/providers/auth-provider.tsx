@@ -7,6 +7,7 @@ import {
   useEffect,
   useCallback,
   ReactNode,
+  useRef,
 } from "react";
 import { useRouter } from "next/navigation";
 
@@ -26,7 +27,8 @@ interface AuthContextValue extends AuthState {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_BASE || "";
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
 // Stub auth provider when wallet is not configured
@@ -55,11 +57,8 @@ function AuthProviderStub({ children }: { children: ReactNode }) {
 
 // Full auth provider with wagmi integration
 function AuthProviderWithWallet({ children }: { children: ReactNode }) {
-  // Dynamic import to avoid issues when wagmi is not configured
-
   const router = useRouter();
   const { address, isConnected } = useConnection();
-  // const { signMessageAsync } = useSignMessage();
   const signMessage = useSignMessage();
   const disconnect = useDisconnect();
 
@@ -69,6 +68,9 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
     address: null,
     error: null,
   });
+
+  // Use a ref to prevent double-login attempts (e.g. during Strict Mode or rapid state changes)
+  const authAttemptedRef = useRef(false);
 
   // Check auth status on mount
   useEffect(() => {
@@ -102,6 +104,26 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
       }));
     }
   };
+
+  const logout = useCallback(async () => {
+    try {
+      await fetch(`${API_BASE}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch {
+      // Ignore errors
+    }
+
+    disconnect.mutate();
+    setState({
+      isAuthenticated: false,
+      isLoading: false,
+      address: null,
+      error: null,
+    });
+    router.push("/");
+  }, [disconnect, router]);
 
   const login = useCallback(async () => {
     if (!address || !isConnected) {
@@ -148,29 +170,34 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
         isLoading: false,
         error: error instanceof Error ? error.message : "Login failed",
       }));
-      logout();
+      // Only logout on serious failures, not necessarily on user rejection
+      // But we'll follow the user's original intent if they prefer
+      // logout();
     }
   }, [address, isConnected, signMessage, router]);
 
-  const logout = useCallback(async () => {
-    try {
-      await fetch(`${API_BASE}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-    } catch {
-      // Ignore errors
+  // Handle auto-login on connection
+  useEffect(() => {
+    // Reset attempt flag when disconnected so they can auto-login again if they reconnect
+    if (!isConnected) {
+      authAttemptedRef.current = false;
+      return;
     }
 
-    disconnect.mutate();
-    setState({
-      isAuthenticated: false,
-      isLoading: false,
-      address: null,
-      error: null,
-    });
-    router.push("/");
-  }, [disconnect, router]);
+    // Trigger auto-login only if connected, not authenticated, and not already attempted for this session
+    if (
+      isConnected &&
+      address &&
+      !state.isAuthenticated &&
+      !state.isLoading &&
+      !authAttemptedRef.current
+    ) {
+      authAttemptedRef.current = true;
+      login().catch(() => {
+        // Error handling is inside login()
+      });
+    }
+  }, [isConnected, address, state.isAuthenticated, state.isLoading, login]);
 
   return (
     <AuthContext.Provider value={{ ...state, login, logout }}>

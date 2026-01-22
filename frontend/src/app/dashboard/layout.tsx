@@ -1,32 +1,32 @@
-'use client'
+"use client";
 
-import { useAuth } from '@/providers/auth-provider'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { Vault, LogOut } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
+import { useAuth } from "@/providers/auth-provider";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const { isAuthenticated, isLoading, logout, address } = useAuth()
-  const router = useRouter()
+  const { isAuthenticated, isLoading, logout, address } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/')
+      router.push("/");
     }
-  }, [isAuthenticated, isLoading, router])
+  }, [isAuthenticated, isLoading, router]);
 
   if (isLoading) {
-    return <DashboardSkeleton />
+    return <DashboardSkeleton />;
   }
 
   if (!isAuthenticated) {
-    return null
+    return null;
   }
 
   return (
@@ -36,12 +36,12 @@ export default function DashboardLayout({
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20">
-                <Vault className="h-5 w-5 text-amber-400" />
-              </div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20"></div>
               <div>
-                <h1 className="text-xl font-semibold tracking-tight">Kobe</h1>
-                <p className="text-xs text-muted-foreground">Vault Dashboard</p>
+                <h1 className="text-xl font-semibold tracking-tight">
+                  DOSA VC
+                </h1>
+                <p className="text-xs text-muted-foreground">824</p>
               </div>
             </div>
 
@@ -85,17 +85,16 @@ export default function DashboardLayout({
       <footer className="border-t border-border/50 mt-16">
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span className="font-mono">Gnosis Safe Integration</span>
             <span className="font-mono opacity-50">v1.0</span>
           </div>
         </div>
       </footer>
     </main>
-  )
+  );
 }
 
 function truncateAddress(address: string): string {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
 
 function DashboardSkeleton() {
@@ -123,5 +122,5 @@ function DashboardSkeleton() {
         </div>
       </div>
     </main>
-  )
+  );
 }

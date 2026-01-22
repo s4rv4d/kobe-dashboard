@@ -28,7 +28,7 @@ export function ConnectButton({ variant = "default" }: ConnectButtonProps) {
 
 function ConnectButtonInner({ variant = "default" }: ConnectButtonProps) {
   const { isAuthenticated, isLoading, login, error } = useAuth();
-  // const connection = useConnection();
+  const connection = useConnection();
   // const prevConnectedRef = useRef(false);
   // const [loginAttempted, setLoginAttempted] = useState(false);
   // const loginRef = useRef(login);
@@ -50,6 +50,10 @@ function ConnectButtonInner({ variant = "default" }: ConnectButtonProps) {
   //     loginRef.current().catch(() => setLoginAttempted(false));
   //   }
   // }, [connection.isConnected, isAuthenticated, isLoading, loginAttempted]);
+
+  // useEffect(() => {
+  //   console.log("Connection changed:", connection.address);
+  // }, [connection]);
 
   return (
     <RainbowConnectButton.Custom>
@@ -89,15 +93,6 @@ function ConnectButtonInner({ variant = "default" }: ConnectButtonProps) {
                   >
                     <Wallet className="h-4 w-4" />
                     Connect Wallet
-                  </Button>
-                );
-              }
-
-              if (!isAuthenticated) {
-                return (
-                  <Button onClick={login} variant="outline" className="gap-2">
-                    <Wallet className="h-4 w-4" />
-                    Sign In
                   </Button>
                 );
               }

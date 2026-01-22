@@ -43,7 +43,7 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(payload);
-    const decoded = this.jwtService.decode(token) as JwtPayload;
+    const decoded: JwtPayload = this.jwtService.decode(token);
 
     return {
       token,

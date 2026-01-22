@@ -32,7 +32,7 @@ export class JwtAuthGuard implements CanActivate {
 
   private extractToken(request: Request): string | null {
     // Try cookie first
-    const cookieToken = request.cookies?.['kobe_auth'];
+    const cookieToken = request.cookies?.['kobe_auth'] as string | undefined;
     if (cookieToken) {
       return cookieToken;
     }

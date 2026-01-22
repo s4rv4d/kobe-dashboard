@@ -7,6 +7,7 @@ import { ProvidersModule } from './providers/providers.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
 import { VaultModule } from './vault/vault.module';
 import { AuthModule } from './auth/auth.module';
+import { DonationsModule } from './donations/donations.module';
 import { validateEnv } from './config/env.validation';
 import { LoggerModule } from 'pino-nestjs';
 
@@ -31,6 +32,7 @@ import { LoggerModule } from 'pino-nestjs';
     PortfolioModule,
     VaultModule,
     AuthModule,
+    DonationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

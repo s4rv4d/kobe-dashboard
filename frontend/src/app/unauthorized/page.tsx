@@ -1,8 +1,11 @@
-import Link from 'next/link'
+'use client'
+
 import { ShieldX, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/hooks/use-auth'
 
 export default function UnauthorizedPage() {
+  const { logout } = useAuth()
   return (
     <main className="min-h-screen flex items-center justify-center px-6">
       <div className="max-w-md mx-auto text-center space-y-6 animate-in">
@@ -27,11 +30,9 @@ export default function UnauthorizedPage() {
           </p>
         </div>
 
-        <Button asChild variant="outline" className="gap-2">
-          <Link href="/">
-            <ArrowLeft className="h-4 w-4" />
-            Return Home
-          </Link>
+        <Button variant="outline" className="gap-2" onClick={logout}>
+          <ArrowLeft className="h-4 w-4" />
+          Return Home
         </Button>
       </div>
     </main>

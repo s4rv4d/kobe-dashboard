@@ -15,3 +15,16 @@ export interface ConfigSetting {
   value: string;
   updated_at?: string;
 }
+
+export interface Donation {
+  id: string;
+  address: string;
+  username: string | null;
+  transaction_date: string;
+  contribution_amount: number;
+  currency: string;
+  eth_price_usd: number;
+  usd_donate_value: number;
+  total_contribution: number;
+  funding_round_id: string | null;
+}

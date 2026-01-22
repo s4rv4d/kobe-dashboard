@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter';
-import { Logger } from 'pino-nestjs';
+// import { Logger } from 'pino-nestjs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -10,7 +10,7 @@ async function bootstrap() {
   });
 
   app.use(cookieParser());
-  app.useLogger(app.get(Logger));
+  // app.useLogger(app.get(Logger));
 
   app.enableCors({
     origin: ['http://localhost:3000'],
@@ -21,6 +21,6 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
 
   await app.listen(process.env.PORT ?? 3001);
-  app.get(Logger);
+  // app.get(Logger);
 }
 bootstrap();

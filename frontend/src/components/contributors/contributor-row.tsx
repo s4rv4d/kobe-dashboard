@@ -1,6 +1,9 @@
+"use client";
+
 import { TableRow, TableCell } from '@/components/ui/table'
 import { formatUSD } from '@/lib/utils/format'
 import type { Contributor } from '@/types'
+import { useRouter } from 'next/navigation'
 
 interface ContributorRowProps {
   contributor: Contributor
@@ -11,8 +14,17 @@ function truncateAddress(address: string): string {
 }
 
 export function ContributorRow({ contributor }: ContributorRowProps) {
+  const router = useRouter()
+
+  const handleClick = () => {
+    router.push(`/user/${contributor.address}`)
+  }
+
   return (
-    <TableRow className="border-b border-border/30 hover:bg-white/[0.02] transition-colors">
+    <TableRow
+      className="border-b border-border/30 hover:bg-white/[0.02] transition-colors cursor-pointer"
+      onClick={handleClick}
+    >
       <TableCell className="py-4">
         <span className="font-mono text-sm text-muted-foreground">
           {truncateAddress(contributor.address)}

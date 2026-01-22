@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Contribution, XirrEntry } from './supabase.types';
+import { Contribution, XirrEntry, Donation } from './supabase.types';
 
 @Injectable()
 export class SupabaseService {
@@ -66,5 +66,21 @@ export class SupabaseService {
 
     if (error) return false;
     return data !== null && data.length > 0;
+  }
+
+  async getDonationsByAddress(address: string): Promise<Donation[]> {
+    const { data, error } = await this.client
+      .from('donations')
+      .select(
+        'id, address, username, transaction_date, contribution_amount, currency, eth_price_usd, usd_donate_value, total_contribution, funding_round_id',
+      )
+      .ilike('address', address)
+      .order('transaction_date', { ascending: true });
+
+    if (error) {
+      throw new Error(`Supabase error: ${error.message}`);
+    }
+
+    return data || [];
   }
 }

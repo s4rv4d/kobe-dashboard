@@ -79,3 +79,22 @@ export interface ContributionsResponse {
   contributors: Contributor[]
   total: number
 }
+
+export interface Donation {
+  id: string
+  address: string
+  username: string | null
+  transactionDate: string
+  contributionAmount: number
+  currency: string
+  ethPriceUsd: number
+  usdDonateValue: number
+  totalContribution: number
+  fundingRoundId: string | null
+}
+
+export interface DonationsResponse {
+  donations: Donation[]
+  total: number
+  username: string | null
+}

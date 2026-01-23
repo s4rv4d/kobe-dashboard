@@ -98,3 +98,22 @@ export interface DonationsResponse {
   total: number
   username: string | null
 }
+
+export interface UserProfile {
+  address: string
+  twitterUsername: string | null
+  email: string | null
+  solanaWallet: string | null
+  profilePhotoUrl: string | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface UserProfileUpdate {
+  email?: string | null
+  solanaWallet?: string | null
+}
+
+export interface TwitterAuthResponse {
+  authUrl: string
+}

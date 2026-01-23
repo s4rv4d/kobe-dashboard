@@ -1,9 +1,11 @@
 "use client";
 
 import { useDonations } from "@/hooks/use-donations";
-import { formatUSD } from "@/lib/utils/format";
+import { useUserProfile } from "@/hooks/use-user-profile";
 import { DonationsList } from "@/components/donations/donations-list";
 import { Skeleton } from "@/components/ui/skeleton";
+import { UserProfile } from "./user-profile";
+import { UserStats } from "./user-stats";
 import { AlertCircle } from "lucide-react";
 
 interface UserDetailContentProps {
@@ -15,13 +17,16 @@ function truncateAddress(address: string): string {
 }
 
 export function UserDetailContent({ address }: UserDetailContentProps) {
-  const { data, isLoading, error } = useDonations(address);
+  const { data: donationsData, isLoading: donationsLoading, error: donationsError } = useDonations(address);
+  const { data: profileData, isLoading: profileLoading } = useUserProfile(address);
+
+  const isLoading = donationsLoading || profileLoading;
 
   if (isLoading) {
     return <UserDetailSkeleton />;
   }
 
-  if (error) {
+  if (donationsError) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
         <AlertCircle className="h-8 w-8 mb-4 text-red-400" />
@@ -30,44 +35,26 @@ export function UserDetailContent({ address }: UserDetailContentProps) {
     );
   }
 
-  if (!data) {
+  if (!donationsData) {
     return null;
   }
 
-  const displayName = data.username || truncateAddress(address);
-  const totalDonated = data.donations.reduce(
-    (sum, d) => sum + d.usdDonateValue,
-    0
-  );
+  const displayName = donationsData.username || truncateAddress(address);
 
   return (
     <div className="space-y-8">
-      {/* Title */}
-      <div>
-        <h2 className="text-2xl font-semibold tracking-tight">{displayName}</h2>
-        {data.username && (
-          <p className="text-sm text-muted-foreground font-mono mt-1">
-            {truncateAddress(address)}
-          </p>
-        )}
-      </div>
+      {/* User Profile */}
+      <UserProfile
+        profile={profileData ?? null}
+        address={address}
+        displayName={displayName}
+      />
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="p-6 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm">
-          <p className="text-sm text-muted-foreground mb-1">Total Donated</p>
-          <p className="text-2xl font-semibold font-mono text-amber-400">
-            {formatUSD(totalDonated)}
-          </p>
-        </div>
-        <div className="p-6 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm">
-          <p className="text-sm text-muted-foreground mb-1">Transactions</p>
-          <p className="text-2xl font-semibold font-mono">{data.total}</p>
-        </div>
-      </div>
+      <UserStats donations={donationsData.donations} total={donationsData.total} />
 
       {/* Donations List */}
-      <DonationsList donations={data.donations} />
+      <DonationsList donations={donationsData.donations} />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Contribution, XirrEntry, Donation } from './supabase.types';
+import { Contribution, XirrEntry, Donation, UserDetailsRow } from './supabase.types';
 
 @Injectable()
 export class SupabaseService {
@@ -82,5 +82,81 @@ export class SupabaseService {
     }
 
     return data || [];
+  }
+
+  async getUserDetails(address: string): Promise<UserDetailsRow | null> {
+    const { data, error } = await this.client
+      .from('user_details')
+      .select('*')
+      .ilike('address', address)
+      .single<UserDetailsRow>();
+
+    if (error && error.code !== 'PGRST116') {
+      throw new Error(`Supabase error: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  async upsertUserDetails(
+    address: string,
+    updates: Partial<Omit<UserDetailsRow, 'address' | 'created_at' | 'updated_at'>>,
+  ): Promise<UserDetailsRow> {
+    const { data, error } = await this.client
+      .from('user_details')
+      .upsert(
+        { address: address.toLowerCase(), ...updates },
+        { onConflict: 'address' },
+      )
+      .select()
+      .single<UserDetailsRow>();
+
+    if (error) {
+      throw new Error(`Supabase error: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  async uploadProfilePhoto(
+    address: string,
+    file: Buffer,
+    contentType: string,
+  ): Promise<string> {
+    const extension = contentType.split('/')[1] || 'jpg';
+    const fileName = `${address.toLowerCase()}.${extension}`;
+    const filePath = `profile-photos/${fileName}`;
+
+    const { error: uploadError } = await this.client.storage
+      .from('profile-photos')
+      .upload(filePath, file, {
+        contentType,
+        upsert: true,
+      });
+
+    if (uploadError) {
+      throw new Error(`Upload error: ${uploadError.message}`);
+    }
+
+    const { data: urlData } = this.client.storage
+      .from('profile-photos')
+      .getPublicUrl(filePath);
+
+    return urlData.publicUrl;
+  }
+
+  async deleteProfilePhoto(address: string): Promise<void> {
+    const extensions = ['jpg', 'jpeg', 'png', 'webp'];
+    const filePaths = extensions.map(
+      (ext) => `profile-photos/${address.toLowerCase()}.${ext}`,
+    );
+
+    const { error } = await this.client.storage
+      .from('profile-photos')
+      .remove(filePaths);
+
+    if (error) {
+      throw new Error(`Delete error: ${error.message}`);
+    }
   }
 }

@@ -156,6 +156,13 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
         throw new Error(data.error || "Authentication failed");
       }
 
+      console.log({
+        isAuthenticated: true,
+        isLoading: false,
+        address: data.data.address,
+        error: null,
+      });
+
       setState({
         isAuthenticated: true,
         isLoading: false,

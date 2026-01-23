@@ -28,3 +28,13 @@ export interface Donation {
   total_contribution: number;
   funding_round_id: string | null;
 }
+
+export interface UserDetailsRow {
+  address: string;
+  twitter_username: string | null;
+  email: string | null;
+  solana_wallet: string | null;
+  profile_photo_url: string | null;
+  created_at: string;
+  updated_at: string;
+}

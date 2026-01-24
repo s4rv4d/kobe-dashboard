@@ -40,8 +40,8 @@ export class AuthController {
 
     res.cookie('kobe_auth', token, {
       httpOnly: true,
-      secure: isProduction,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: isProduction ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -54,7 +54,14 @@ export class AuthController {
   @Post('logout')
   @HttpCode(200)
   logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('kobe_auth');
+    const isProduction =
+      this.configService.get<string>('NODE_ENV') === 'production';
+
+    res.clearCookie('kobe_auth', {
+      httpOnly: true,
+      secure: true,
+      sameSite: isProduction ? 'none' : 'lax',
+    });
     return { success: true };
   }
 }

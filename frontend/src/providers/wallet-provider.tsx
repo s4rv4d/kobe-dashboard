@@ -34,6 +34,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       projectId,
       chains: [mainnet],
       ssr: false,
+      appDescription: "DOSA VC Dashboard",
+      appUrl: process.env.NEXT_PUBLIC_APP_URL,
+      appIcon: `${process.env.NEXT_PUBLIC_APP_URL}/icon.png`,
     });
   }, []);
 

@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https: blob:",
               "font-src 'self' data:",
-              "connect-src 'self' https://*.walletconnect.com wss://*.walletconnect.com https://*.walletconnect.org wss://*.walletconnect.org https://*.alchemy.com https://*.alchemyapi.io",
+              "connect-src 'self' https://*.walletconnect.com wss://*.walletconnect.com https://*.walletconnect.org wss://*.walletconnect.org https://*.alchemy.com https://*.alchemyapi.io https://eth.merkle.io",
               "frame-src 'self' https://verify.walletconnect.com https://verify.walletconnect.org",
             ].join("; "),
           },

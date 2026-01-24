@@ -66,7 +66,10 @@ export default function DashboardLayout({
 
               {/* Address badge */}
               {address && (
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                <div
+                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 cursor-pointer hover:bg-amber-500/20 transition-colors"
+                  onClick={() => router.push(`/user/${address}`)}
+                >
                   <span className="font-mono text-xs text-amber-400">
                     {truncateAddress(address)}
                   </span>

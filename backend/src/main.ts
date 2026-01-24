@@ -13,7 +13,10 @@ async function bootstrap() {
   // app.useLogger(app.get(Logger));
 
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: [
+      'http://localhost:3000',
+      'https://magnificent-determination-production.up.railway.app',
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   });

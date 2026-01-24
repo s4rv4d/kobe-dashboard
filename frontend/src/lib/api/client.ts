@@ -1,4 +1,5 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL
+// Use local API proxy routes (first-party cookies)
+const API_BASE = '/api'
 
 export async function apiClient<T>(endpoint: string): Promise<T> {
   const res = await fetch(`${API_BASE}${endpoint}`, {

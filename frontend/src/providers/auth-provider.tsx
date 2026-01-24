@@ -27,8 +27,6 @@ interface AuthContextValue extends AuthState {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_BASE || "";
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
 // Stub auth provider when wallet is not configured
@@ -79,9 +77,8 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
 
   const checkAuth = async () => {
     try {
-      const res = await fetch(`${API_BASE}/vault/stats`, {
-        credentials: "include",
-      });
+      // Use local API proxy (cookie is first-party)
+      const res = await fetch("/api/vault/stats");
       if (res.ok) {
         setState((prev) => ({
           ...prev,
@@ -107,10 +104,8 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
 
   const logout = useCallback(async () => {
     try {
-      await fetch(`${API_BASE}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
+      // Use local API proxy
+      await fetch("/api/auth/logout", { method: "POST" });
     } catch {
       // Ignore errors
     }
@@ -139,10 +134,10 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
 
       const signature = await signMessage.mutateAsync({ message });
 
-      const res = await fetch(`${API_BASE}/auth/verify`, {
+      // Use local API proxy (cookie becomes first-party)
+      const res = await fetch("/api/auth/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify({ address, signature, message }),
       });
 
@@ -155,13 +150,6 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
         }
         throw new Error(data.error || "Authentication failed");
       }
-
-      console.log({
-        isAuthenticated: true,
-        isLoading: false,
-        address: data.data.address,
-        error: null,
-      });
 
       setState({
         isAuthenticated: true,

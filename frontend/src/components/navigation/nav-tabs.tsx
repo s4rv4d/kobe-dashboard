@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 
 const TAB_ITEMS = [
   { label: 'Home', href: '/dashboard', disabled: false },
-  { label: 'Portfolio', href: '/portfolio', disabled: false },
+  { label: 'Portfolio', href: '/portfolio', disabled: true },
   { label: 'Yield', href: null, disabled: true },
   { label: 'Liquidity', href: null, disabled: true },
 ] as const

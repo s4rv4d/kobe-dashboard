@@ -411,7 +411,7 @@ export default function DashboardPage() {
 - TokenPieChart with Recharts donut chart (gold/amber palette)
 - TokenList/TokenRow with shadcn Table + pagination (5/page)
 - NftGrid/NftCard with image fallbacks + pagination (10/page, 420px min-height)
-- User detail page with profile, stats, and donations table
+- User detail page with profile, stats (4 cards: Total Invested, Current Value, Multiple, XIRR), and donations table (no Funding Round column)
 - User profile editing (email, Solana wallet, Twitter connect/disconnect)
 - Profile photo upload/delete (5MB, JPEG/PNG/WebP)
 - Social links display (Twitter, email, Solana wallet)
@@ -530,7 +530,7 @@ frontend/src/app/
 - [x] ContributorsList paginated (10/page) with clickable rows
 - [x] TokenList displays all tokens sorted by value with pagination (5/page)
 - [x] NftGrid renders images with fallbacks and pagination (10/page, 420px min-height)
-- [x] User profile page shows donations and profile info
+- [x] User profile page shows donations (no Funding Round column), profile info, and per-user stats (Total Invested, Current Value, Multiple, XIRR)
 - [x] Profile editing works (email, Solana wallet)
 - [x] Profile photo upload/delete works
 - [x] Twitter connect/disconnect works

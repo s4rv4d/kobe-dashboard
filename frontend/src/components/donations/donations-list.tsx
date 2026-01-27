@@ -54,9 +54,6 @@ export function DonationsList({ donations }: DonationsListProps) {
             <TableHead className="text-right text-xs font-medium text-muted-foreground">
               USD Value
             </TableHead>
-            <TableHead className="text-right text-xs font-medium text-muted-foreground">
-              Funding Round
-            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

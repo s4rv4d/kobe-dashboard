@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const PROTECTED_ROUTES = ["/dashboard", "/user"];
+const PROTECTED_ROUTES = ["/dashboard", "/user", "/portfolio"];
 const AUTH_COOKIE = "kobe_auth";
 
 export function middleware(request: NextRequest) {
@@ -27,5 +27,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/user/:path*"],
+  matcher: ["/dashboard/:path*", "/user/:path*", "/portfolio/:path*"],
 };

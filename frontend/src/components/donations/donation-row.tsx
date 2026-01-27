@@ -28,11 +28,6 @@ export function DonationRow({ donation }: DonationRowProps) {
       <TableCell className="text-right font-mono text-sm font-medium text-foreground">
         {formatUSD(donation.usdDonateValue)}
       </TableCell>
-      <TableCell className="text-right">
-        <span className="text-xs text-muted-foreground">
-          {donation.fundingRoundId || "—"}
-        </span>
-      </TableCell>
     </TableRow>
   );
 }

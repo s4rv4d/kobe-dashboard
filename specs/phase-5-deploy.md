@@ -224,13 +224,15 @@ railway rollback
 app.enableCors({
   origin: [
     'http://localhost:3000',
-    'https://kobe-dash.vercel.app',
-    /\.vercel\.app$/,
+    'https://magnificent-determination-production.up.railway.app',
   ],
-  methods: ['GET'],
-  credentials: false,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
 })
 ```
+
+**Additional middleware:**
+- `cookie-parser` applied via `app.use(cookieParser())`
 
 **Global Filters:**
 - AllExceptionsFilter applied via `app.useGlobalFilters()`
@@ -238,3 +240,13 @@ app.enableCors({
 **Deployment Files:**
 - `railway.toml` - for Railway backend deployment
 - `next.config.ts` - image domains configured
+
+**CI/CD:**
+- `.github/workflows/claude-code-review.yml` - Claude code review on PRs
+- `.github/workflows/claude.yml` - Claude assistant integration
+
+**Frontend API Proxy (Production consideration):**
+- All API calls go through Next.js API routes (`/api/*`) which proxy to backend
+- Auth cookies are first-party (set by Next.js domain), avoiding cross-origin issues
+- Backend URL configured via `BACKEND_URL` env var (server-side only)
+- Frontend never directly calls backend in production

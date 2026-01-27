@@ -404,31 +404,63 @@ export default function DashboardPage() {
 ## Implementation Status
 
 **Implemented:**
-- DashboardContent as main orchestrator (client component)
-- VaultStats with 4 StatCards
-- TokenPieChart with Recharts donut chart
+- Landing page with aurora background and connect wallet CTA
+- DashboardContent as main orchestrator (VaultStats + ContributorsList)
+- VaultStats with 4 StatCards (Current Value, Invested, Multiple, XIRR) -- color-coded positive/negative
+- ContributorsList with pagination (10/page) and clickable rows -> user profile
+- TokenPieChart with Recharts donut chart (gold/amber palette)
 - TokenList/TokenRow with shadcn Table + pagination (5/page)
 - NftGrid/NftCard with image fallbacks + pagination (10/page, 420px min-height)
-- Skeletons: StatsSkeleton, ChartSkeleton, TokenListSkeleton, NftGridSkeleton (all match paginated layouts)
+- User detail page with profile, stats, and donations table
+- User profile editing (email, Solana wallet, Twitter connect/disconnect)
+- Profile photo upload/delete (5MB, JPEG/PNG/WebP)
+- Social links display (Twitter, email, Solana wallet)
+- Auth-guarded layouts with redirect to landing
+- Unauthorized/access denied page
+- RainbowKit custom connect button (connect/signing/error/retry states)
+- WalletProvider (wagmi + RainbowKit, mainnet only)
+- AuthProvider (EIP-191 sign -> JWT cookie, auto-login on connect)
+- API proxy (catch-all route converts cookie to Bearer token)
+- Middleware (protects /dashboard and /user routes)
+- Skeletons: StatsSkeleton, ChartSkeleton, TokenListSkeleton, NftGridSkeleton, ContributorsListSkeleton
 - ErrorBoundary with ErrorMessage component
-- SectionHeader with icons
 
 **Additional Utilities:**
 - `formatCompactUSD` - formats large numbers as $1.23M, $4.56K
+- `formatDate` - parses DD/MM/YYYY date strings
+- `resolveIpfs` - converts ipfs:// to cloudflare gateway
+- `validateProfilePhoto` - client-side file validation
+- Zod schemas for user profile form validation
 
 **Hooks:**
+- useVaultStats (30s stale, 30s refetch)
+- useContributions (60s stale)
 - usePortfolio (30s stale, 30s refetch)
 - useTokens (30s stale)
 - useNfts (60s stale)
 - useSafeInfo (not used - backend endpoint missing)
+- useDonations(address) (60s stale)
+- useUserProfile(address) (60s stale)
+- useUpdateUserProfile (mutation)
+- useUploadProfilePhoto (mutation)
+- useDeleteProfilePhoto (mutation)
+- useTwitterAuth (mutation)
+- useDisconnectTwitter (mutation)
+- useAuth (re-export from auth-provider)
 
 **Components Structure (Actual):**
 ```
 frontend/src/components/
 ├── charts/
 │   └── token-pie-chart.tsx
+├── contributors/
+│   ├── contributor-row.tsx
+│   └── contributors-list.tsx
 ├── dashboard/
 │   └── dashboard-content.tsx
+├── donations/
+│   ├── donation-row.tsx
+│   └── donations-list.tsx
 ├── nfts/
 │   ├── nft-card.tsx
 │   └── nft-grid.tsx
@@ -444,23 +476,66 @@ frontend/src/components/
 │   ├── badge.tsx
 │   ├── button.tsx
 │   ├── card.tsx
+│   ├── input.tsx
 │   ├── skeleton.tsx
 │   ├── table.tsx
 │   └── tabs.tsx
+├── user/
+│   ├── profile-photo-upload.tsx
+│   ├── social-links.tsx
+│   ├── user-detail-content.tsx
+│   ├── user-profile-edit.tsx
+│   ├── user-profile.tsx
+│   └── user-stats.tsx
+├── wallet/
+│   └── connect-button.tsx
 ├── error-boundary.tsx
 └── skeletons.tsx
+```
+
+**Pages Structure (Actual):**
+```
+frontend/src/app/
+├── layout.tsx              # Root layout (WalletProvider + AuthProvider)
+├── page.tsx                # Landing page (connect wallet)
+├── globals.css
+├── favicon.ico
+├── api/
+│   ├── auth/
+│   │   ├── verify/route.ts  # Auth proxy
+│   │   └── logout/route.ts  # Logout proxy
+│   └── [...path]/route.ts   # Catch-all backend proxy
+├── dashboard/
+│   ├── layout.tsx            # Auth-guarded layout
+│   └── page.tsx              # Dashboard content
+├── user/
+│   └── [address]/
+│       ├── layout.tsx        # Auth-guarded layout with back button
+│       └── page.tsx          # User detail page
+└── unauthorized/
+    └── page.tsx              # Access denied page
 ```
 
 ---
 
 ## Verification
 
+- [x] Landing page renders with connect wallet button
+- [x] Wallet connection works (MetaMask, WalletConnect, Rainbow)
+- [x] EIP-191 signature auth flow works
+- [x] Unauthorized addresses see access denied page
+- [x] Dashboard redirects to landing when not authenticated
 - [x] VaultStats renders 4 cards with correct data
 - [x] PieChart shows allocation with "Others" grouping
-- [x] TokenList displays all tokens sorted by value
-- [x] TokenList pagination (5/page) with Prev/Next
-- [x] NftGrid renders images with fallbacks
-- [x] NftGrid pagination (10/page) with fixed 420px min-height
+- [x] ContributorsList paginated (10/page) with clickable rows
+- [x] TokenList displays all tokens sorted by value with pagination (5/page)
+- [x] NftGrid renders images with fallbacks and pagination (10/page, 420px min-height)
+- [x] User profile page shows donations and profile info
+- [x] Profile editing works (email, Solana wallet)
+- [x] Profile photo upload/delete works
+- [x] Twitter connect/disconnect works
+- [x] Social links display correctly
 - [x] Loading skeletons match paginated layouts
 - [x] Error boundaries catch and display errors
 - [x] Mobile responsive layout works
+- [x] Address badge in header links to user profile

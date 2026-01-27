@@ -286,23 +286,43 @@ backend/src/portfolio/
 ## Implementation Status
 
 **Implemented:**
-- `GET /api/v1/health` - returns status, redis, uptime, version
-- `GET /api/v1/safe/:address/portfolio` - with allocation (top 5 + Others)
-- `GET /api/v1/safe/:address/tokens` - with sort/order query params
-- `GET /api/v1/safe/:address/nfts` - with collection/limit/offset params
-- Zod validation for all params/queries
+- `GET /api/v1/health` - returns status, redis, uptime, version (unguarded, separate HealthController with `api/v1` prefix)
+- `GET /safe/:address/portfolio` - with allocation (top 5 + Others), guarded
+- `GET /safe/:address/tokens` - with sort/order query params, guarded
+- `GET /safe/:address/nfts` - with collection/limit/offset params, guarded
+- `GET /vault/stats` - vault stats (currentValue, invested, multiple, xirr), guarded
+- `GET /vault/contributions` - contributors list with equity and multiples, guarded
+- `POST /auth/verify` - EIP-191 signature verification, JWT cookie
+- `POST /auth/logout` - clear auth cookie
+- `GET /donations/:address` - donation history by wallet, guarded
+- `GET /user/:address` - user profile (hides email for non-owner), guarded
+- `PUT /user/me` - update profile (email, solanaWallet), guarded
+- `POST /user/me/photo` - upload profile photo (multipart, 5MB), guarded
+- `DELETE /user/me/photo` - delete profile photo, guarded
+- `GET /user/twitter/auth` - initiate Twitter OAuth, guarded
+- `GET /user/twitter/callback` - Twitter OAuth callback (unguarded, uses state from Redis)
+- `DELETE /user/twitter` - disconnect Twitter, guarded
+- Zod validation for all params/queries/bodies
 - AllExceptionsFilter for error handling
+- JwtAuthGuard on all data endpoints
 
 **Not Implemented:**
 - `GET /api/v1/safe/:address` - SafeInfo endpoint (uses Alchemy directly)
 - 24h change data (hardcoded to 0)
 - NFT floor prices (not fetched)
 
+**Note on route prefixes:** Portfolio and health controllers use no global prefix; vault/auth/donations/user controllers also have no global prefix. The health endpoint uses its own `@Controller('api/v1')` prefix. All other controllers use their domain name (e.g., `@Controller('vault')`, `@Controller('safe')`, `@Controller('auth')`).
+
 **TTL Values (Actual):**
+- Vault stats: 60s (STATS_TTL)
+- Contributions: 120s (CONTRIBUTIONS_TTL)
+- Config: 300s (CONFIG_TTL)
 - Portfolio: 60s (PORTFOLIO_TTL)
 - Tokens: 30s (TOKENS_TTL)
 - NFTs: 120s (NFTS_TTL)
 - Prices: 120s (PRICE_TTL in CoinGeckoService)
+- Donations: 120s (DONATIONS_TTL)
+- Twitter auth state: 600s (STATE_TTL)
 
 ---
 
@@ -313,3 +333,9 @@ backend/src/portfolio/
 - [x] `/tokens` sorting works (value desc by default)
 - [x] `/nfts` pagination works
 - [x] Error responses follow standard format
+- [x] Auth endpoints verify signatures and set cookies
+- [x] JwtAuthGuard blocks unauthenticated requests
+- [x] Donations endpoint returns per-user data
+- [x] User profile CRUD works (including privacy rules)
+- [x] Twitter OAuth flow works end-to-end
+- [x] Photo upload/delete via Supabase Storage

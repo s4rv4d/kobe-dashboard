@@ -195,7 +195,9 @@ function AuthProviderWithWallet({ children }: { children: ReactNode }) {
   }, [isConnected, address, state.isAuthenticated, state.isLoading, login]);
 
   return (
-    <AuthContext.Provider value={{ ...state, login, logout }}>
+    <AuthContext.Provider
+      value={{ ...state, login, logout, address: address || state.address }}
+    >
       {children}
     </AuthContext.Provider>
   );

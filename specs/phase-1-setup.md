@@ -179,25 +179,40 @@ export async function apiClient<T>(endpoint: string): Promise<T> {
 ## Implementation Status
 
 **Completed:**
-- Backend NestJS setup with ConfigModule + Zod validation
-- Frontend Next.js 15 with shadcn/ui (New York style, Zinc base)
+- Backend NestJS 11 setup with ConfigModule + Zod v4 validation
+- Frontend Next.js 16 with shadcn/ui (New York style, Zinc base)
 - Redis integration via @songkeys/nestjs-redis
-- React Query provider setup
-- API client with success/error handling
+- React Query provider setup (embedded in WalletProvider)
+- API client with success/error handling (GET/POST/PUT/DELETE/Upload)
+- JWT auth with cookie-based sessions
+- WalletConnect/RainbowKit integration
 
 **Dependencies Installed:**
 
 Backend:
-- @nestjs/config, zod (env validation)
-- alchemy-sdk (not @safe-global/api-kit)
+- @nestjs/config, zod v4 (env validation)
+- @nestjs/jwt, @nestjs/passport, ethers (auth)
+- alchemy-sdk (blockchain data)
+- @supabase/supabase-js (database + storage)
 - ioredis, @songkeys/nestjs-redis
 - bottleneck (rate limiting)
+- cookie-parser (cookie handling)
+- pino-nestjs (logging, configured but disabled)
 
 Frontend:
 - @tanstack/react-query
+- @rainbow-me/rainbowkit, wagmi, viem (wallet)
 - recharts
 - lucide-react (icons)
-- shadcn components: card, table, avatar, badge, skeleton, tabs, button
+- zod v4 (client validation)
+- shadcn components: card, table, avatar, badge, skeleton, tabs, button, input
+
+**Env schema additions since initial spec:**
+- JWT_SECRET (required, min 32 chars)
+- JWT_EXPIRY (optional, default 7d)
+- SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (required)
+- VAULT_ADDRESS (required, validated as Ethereum address)
+- Frontend: BACKEND_URL, NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID, NEXT_PUBLIC_APP_URL
 
 ---
 

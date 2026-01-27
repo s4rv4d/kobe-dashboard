@@ -218,8 +218,9 @@ backend/src/providers/
 
 **Implemented:**
 - AlchemyService with getEthBalance, getTokenBalances, getNfts, getTokenMetadata
-- CoinGeckoService with getTokenPrice, getBatchPrices
+- CoinGeckoService with getTokenPrice, getBatchPrices (batch caching per address)
 - CacheService with get, set, delete, getOrFetch
+- SupabaseService with getContributions, getXirrData, getConfig, isAllowlisted, getDonationsByAddress, getUserDetails, upsertUserDetails, uploadProfilePhoto, deleteProfilePhoto
 - Rate limiters: alchemyLimiter (5 concurrent, 100ms), coingeckoLimiter (1 concurrent, 2000ms)
 
 **Not Implemented:**
@@ -238,9 +239,13 @@ backend/src/providers/
 │   ├── coingecko.module.ts
 │   ├── coingecko.service.ts
 │   └── coingecko.types.ts
-└── cache/
-    ├── cache.module.ts
-    └── cache.service.ts
+├── cache/
+│   ├── cache.module.ts
+│   └── cache.service.ts
+└── supabase/
+    ├── supabase.module.ts
+    ├── supabase.service.ts
+    └── supabase.types.ts
 ```
 
 ---
@@ -252,3 +257,5 @@ backend/src/providers/
 - [ ] ~~SafeService returns safe info~~ (not implemented)
 - [x] Cache hits work (check logs/metrics)
 - [x] Rate limiting prevents 429 errors
+- [x] SupabaseService queries all tables correctly
+- [x] Profile photo upload/delete via Supabase Storage

@@ -53,7 +53,7 @@ export default function UserLayout({
                   className="object-contain"
                 />
               </div>
-              <div>
+              <div className="hidden md:block">
                 <h1 className="text-xl font-semibold tracking-tight">
                   DOSA VC
                 </h1>
@@ -68,7 +68,8 @@ export default function UserLayout({
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                 </span>
-                <span className="font-mono">Ethereum Mainnet</span>
+                <span className="font-mono hidden md:inline">Ethereum Mainnet</span>
+                <span className="font-mono md:hidden">ETH</span>
               </div>
 
               {/* Address badge */}

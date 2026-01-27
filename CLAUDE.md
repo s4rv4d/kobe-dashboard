@@ -93,7 +93,7 @@ kobe-dash/
 - `frontend/src/app/dashboard/page.tsx` - Dashboard (VaultStats + ContributorsList)
 - `frontend/src/app/dashboard/layout.tsx` - Auth-guarded layout w/ header, address badge -> user profile link
 - `frontend/src/app/user/[address]/page.tsx` - User detail (profile + donations)
-- `frontend/src/app/user/[address]/layout.tsx` - Auth-guarded layout w/ back button
+- `frontend/src/app/user/[address]/layout.tsx` - Auth-guarded layout w/ back button, title/subtitle hidden on mobile, "Ethereum Mainnet" shows as "ETH" on mobile
 - `frontend/src/app/unauthorized/page.tsx` - Access denied page
 
 **Frontend - API Proxy:**
@@ -117,11 +117,11 @@ kobe-dash/
 - `frontend/src/components/stats/vault-stats.tsx` - 4 stat cards (Current Value, Invested, Multiple, XIRR)
 - `frontend/src/components/contributors/contributors-list.tsx` - Paginated table (10/page)
 - `frontend/src/components/contributors/contributor-row.tsx` - Clickable row -> user profile
-- `frontend/src/components/donations/donations-list.tsx` - Paginated donations table (5/page)
-- `frontend/src/components/user/user-detail-content.tsx` - User page orchestrator (profile + stats + donations)
+- `frontend/src/components/donations/donations-list.tsx` - Paginated donations table (5/page, no Funding Round column)
+- `frontend/src/components/user/user-detail-content.tsx` - User page orchestrator (profile + stats + donations); fetches contributions + vault stats to derive per-user currentValue/multiple and vault XIRR
 - `frontend/src/components/user/user-profile.tsx` - View/edit mode with photo + social links
 - `frontend/src/components/user/user-profile-edit.tsx` - Edit form (email, solana wallet, Twitter connect)
-- `frontend/src/components/user/user-stats.tsx` - Total Donated + Transactions count
+- `frontend/src/components/user/user-stats.tsx` - 4 StatCards (Total Invested, Current Value, Multiple, XIRR) in 2x2/4-col grid; accepts totalInvested, currentValue?, multiple?, xirr? props
 - `frontend/src/components/user/social-links.tsx` - Twitter/email/Solana wallet links
 - `frontend/src/components/user/profile-photo-upload.tsx` - Avatar w/ upload/delete (5MB, JPEG/PNG/WebP)
 - `frontend/src/components/wallet/connect-button.tsx` - RainbowKit custom connect button
@@ -303,7 +303,8 @@ Dashboard (/dashboard):
     -> Response { success, data, meta }
 
 User Profile (/user/:address):
-    -> Fetch donations + user profile in parallel
+    -> Fetch donations + user profile + contributions + vault stats in parallel
+    -> Finds contributor by case-insensitive address match for per-user stats
     -> Owner can edit profile (email, solana wallet, Twitter, photo)
     -> Twitter: OAuth2 PKCE flow -> callback -> save username
     -> Photo: multipart upload -> Supabase Storage -> save URL
@@ -336,7 +337,7 @@ Error responses:
 - **Dashboard Layout**: Sticky header (logo, chain indicator, address badge -> profile, logout)
 - **VaultStats**: 4 cards (Current Value, Invested, Multiple, XIRR) -- color-coded positive/negative
 - **ContributorsList**: Paginated table (10/page) with Wallet, Invested, Current Value, Equity, Multiple -- rows clickable to user profile
-- **User Detail Page**: Profile (avatar, name, social links, edit button) + Stats (Total Donated, Transactions) + Donations table
+- **User Detail Page**: Profile (avatar, name, social links, edit button) + Stats (4 cards: Total Invested, Current Value, Multiple, XIRR) + Donations table (no Funding Round column)
 - **User Profile Edit**: Form with Twitter connect/disconnect, email, Solana wallet, photo upload
 - **TokenPieChart**: Recharts donut chart w/ gold/amber palette, groups <2% as "Others"
 - **TokenList**: Paginated table (5/page) -- Token, Price, Balance, Value, %

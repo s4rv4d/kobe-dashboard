@@ -6,9 +6,10 @@ import { useEffect } from "react";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { NavTabs } from "@/components/navigation/nav-tabs";
 import Image from "next/image";
 
-export default function DashboardLayout({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -23,7 +24,7 @@ export default function DashboardLayout({
   }, [isAuthenticated, isLoading, router]);
 
   if (isLoading) {
-    return <DashboardSkeleton />;
+    return <MainSkeleton />;
   }
 
   if (!isAuthenticated) {
@@ -88,6 +89,11 @@ export default function DashboardLayout({
             </div>
           </div>
         </div>
+
+        {/* Navigation Tabs */}
+        <div className="container mx-auto px-6 border-t border-border/30">
+          <NavTabs />
+        </div>
       </header>
 
       {/* Main Content */}
@@ -109,7 +115,7 @@ function truncateAddress(address: string): string {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
 
-function DashboardSkeleton() {
+function MainSkeleton() {
   return (
     <main className="min-h-screen">
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
@@ -133,10 +139,18 @@ function DashboardSkeleton() {
             <Skeleton className="h-8 w-32" />
           </div>
         </div>
+        {/* Skeleton tabs */}
+        <div className="container mx-auto px-6 border-t border-border/30 py-2.5">
+          <div className="flex items-center gap-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-5 w-16 bg-white/5" />
+            ))}
+          </div>
+        </div>
       </header>
       <div className="container mx-auto px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
+          {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-32 rounded-2xl" />
           ))}
         </div>

@@ -2,6 +2,7 @@
 
 import { useDonations } from "@/hooks/use-donations";
 import { useUserProfile } from "@/hooks/use-user-profile";
+import { useContributions, useVaultStats } from "@/hooks/use-vault";
 import { DonationsList } from "@/components/donations/donations-list";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UserProfile } from "./user-profile";
@@ -19,8 +20,10 @@ function truncateAddress(address: string): string {
 export function UserDetailContent({ address }: UserDetailContentProps) {
   const { data: donationsData, isLoading: donationsLoading, error: donationsError } = useDonations(address);
   const { data: profileData, isLoading: profileLoading } = useUserProfile(address);
+  const { data: contributionsData, isLoading: contributionsLoading } = useContributions();
+  const { data: vaultData, isLoading: vaultLoading } = useVaultStats();
 
-  const isLoading = donationsLoading || profileLoading;
+  const isLoading = donationsLoading || profileLoading || contributionsLoading || vaultLoading;
 
   if (isLoading) {
     return <UserDetailSkeleton />;
@@ -41,6 +44,15 @@ export function UserDetailContent({ address }: UserDetailContentProps) {
 
   const displayName = donationsData.username || truncateAddress(address);
 
+  const contributor = contributionsData?.contributors.find(
+    (c) => c.address.toLowerCase() === address.toLowerCase()
+  );
+
+  const totalInvested = donationsData.donations.reduce(
+    (sum, d) => sum + d.usdDonateValue,
+    0
+  );
+
   return (
     <div className="space-y-8">
       {/* User Profile */}
@@ -51,7 +63,12 @@ export function UserDetailContent({ address }: UserDetailContentProps) {
       />
 
       {/* Summary Stats */}
-      <UserStats donations={donationsData.donations} total={donationsData.total} />
+      <UserStats
+        totalInvested={contributor?.investedAmount ?? totalInvested}
+        currentValue={contributor?.currentValue}
+        multiple={contributor?.multiple}
+        xirr={vaultData?.xirr}
+      />
 
       {/* Donations List */}
       <DonationsList donations={donationsData.donations} />
@@ -66,7 +83,9 @@ function UserDetailSkeleton() {
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-4 w-32 mt-2" />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <Skeleton className="h-24 rounded-2xl" />
+        <Skeleton className="h-24 rounded-2xl" />
         <Skeleton className="h-24 rounded-2xl" />
         <Skeleton className="h-24 rounded-2xl" />
       </div>

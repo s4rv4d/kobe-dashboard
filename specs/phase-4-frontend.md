@@ -61,9 +61,17 @@ export function VaultStats({ totalValue, change24h, tokenCount, nftCount }: Vaul
 **File:** `frontend/src/components/charts/token-pie-chart.tsx`
 
 ```typescript
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 
-const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#ef4444', '#8b5cf6', '#ec4899', '#6b7280']
+const COLORS = [
+  '#ff5f1f', // electric-orange
+  '#8b7bf7', // cool-violet
+  '#b8f53d', // neon-green
+  '#ff8c5a', // lighter orange
+  '#a99bf7', // lighter violet
+  '#c8f76d', // lighter green
+  '#525252', // neutral-600 (Others)
+]
 
 interface AllocationItem {
   symbol: string
@@ -76,9 +84,9 @@ export function TokenPieChart({ allocation }: { allocation: AllocationItem[] }) 
   const grouped = groupSmallAllocations(allocation, 2)
 
   return (
-    <Card className="p-4">
-      <h3 className="text-lg font-semibold mb-4">Portfolio Allocation</h3>
-      <ResponsiveContainer width="100%" height={300}>
+    <div className="solid-card p-5">
+      <div className="flex flex-col items-center">
+      <ResponsiveContainer width="100%" height={200}>
         <PieChart>
           <Pie
             data={grouped}
@@ -86,22 +94,21 @@ export function TokenPieChart({ allocation }: { allocation: AllocationItem[] }) 
             nameKey="symbol"
             cx="50%"
             cy="50%"
-            innerRadius={60}
-            outerRadius={100}
-            paddingAngle={2}
+            innerRadius={55}
+            outerRadius={85}
+            paddingAngle={3}
+            strokeWidth={0}
           >
             {grouped.map((entry, i) => (
               <Cell key={entry.symbol} fill={COLORS[i % COLORS.length]} />
             ))}
           </Pie>
-          <Tooltip
-            formatter={(value: number) => formatUSD(value)}
-            labelFormatter={(label) => label}
-          />
-          <Legend />
+          <Tooltip content={<CustomTooltip />} />
         </PieChart>
       </ResponsiveContainer>
-    </Card>
+      {/* Custom Legend with LegendItem components */}
+      </div>
+    </div>
   )
 }
 ```
@@ -206,29 +213,34 @@ export function NftCard({ nft }: { nft: Nft }) {
   const [imgError, setImgError] = useState(false)
 
   return (
-    <Card className="overflow-hidden">
-      <div className="aspect-square relative bg-muted">
-        <Image
-          src={imgError ? '/nft-fallback.svg' : resolveIpfs(nft.imageUrl)}
-          alt={nft.name}
-          fill
-          className="object-cover"
-          onError={() => setImgError(true)}
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-        />
-      </div>
-      <div className="p-3">
-        <div className="font-medium truncate">{nft.name}</div>
-        <div className="text-sm text-muted-foreground truncate">
-          {nft.collection.name}
-        </div>
-        {nft.floorPriceEth && (
-          <div className="text-sm mt-1">
-            Floor: {nft.floorPriceEth.toFixed(2)} ETH
+    <div className="solid-card overflow-hidden group cursor-pointer">
+      <div className="aspect-square relative bg-black/20 overflow-hidden">
+        {!imgError && nft.imageUrl ? (
+          <Image
+            src={resolveIpfs(nft.imageUrl)}
+            alt={nft.name}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            onError={() => setImgError(true)}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+          />
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground gap-2">
+            <ImageOff className="h-8 w-8 opacity-50" />
+            <span className="text-xs">No Image</span>
           </div>
         )}
+        {/* Hover overlay + floor price badge on hover */}
       </div>
-    </Card>
+      <div className="p-4 space-y-1">
+        <p className="font-medium truncate group-hover:text-[#ff5f1f] transition-colors">
+          {nft.name}
+        </p>
+        <p className="text-xs text-muted-foreground truncate">
+          {nft.collection.name}
+        </p>
+      </div>
+    </div>
   )
 }
 ```
@@ -404,18 +416,19 @@ export default function DashboardPage() {
 ## Implementation Status
 
 **Implemented:**
-- Landing page with aurora background and connect wallet CTA
+- Landing page with multi-color gradient background (orange/violet/green) and connect wallet CTA
 - DashboardContent as main orchestrator (VaultStats + ContributorsList)
 - VaultStats with 4 StatCards (Current Value, Invested, Multiple, XIRR) -- color-coded positive/negative
 - ContributorsList with pagination (10/page) and clickable rows -> user profile
-- TokenPieChart with Recharts donut chart (gold/amber palette)
+- TokenPieChart with Recharts donut chart (electric orange/violet/neon green palette)
 - TokenList/TokenRow with shadcn Table + pagination (5/page)
 - NftGrid/NftCard with image fallbacks + pagination (10/page, 420px min-height)
 - User detail page with profile, stats (4 cards: Total Invested, Current Value, Multiple, XIRR), and donations table (no Funding Round column)
 - User profile editing (email, Solana wallet, Twitter connect/disconnect)
 - Profile photo upload/delete (5MB, JPEG/PNG/WebP)
 - Social links display (Twitter, email, Solana wallet)
-- Auth-guarded layouts with redirect to landing
+- Design system uses solid cards (`solid-card` class: `bg-[#1a1a1a]`, `border-[#2a2a2a]`, `rounded-2xl`) instead of glass/translucent cards
+- Auth-guarded layouts with redirect to landing (via `(main)` route group)
 - Unauthorized/access denied page
 - RainbowKit custom connect button (connect/signing/error/retry states)
 - WalletProvider (wagmi + RainbowKit, mainnet only)
@@ -505,9 +518,12 @@ frontend/src/app/
 │   │   ├── verify/route.ts  # Auth proxy
 │   │   └── logout/route.ts  # Logout proxy
 │   └── [...path]/route.ts   # Catch-all backend proxy
-├── dashboard/
-│   ├── layout.tsx            # Auth-guarded layout
-│   └── page.tsx              # Dashboard content
+├── (main)/                     # Route group (shared auth-guarded layout)
+│   ├── layout.tsx              # Auth-guarded layout w/ header, nav tabs, footer
+│   ├── dashboard/
+│   │   └── page.tsx            # Dashboard content
+│   └── portfolio/
+│       └── page.tsx            # Portfolio content
 ├── user/
 │   └── [address]/
 │       ├── layout.tsx        # Auth-guarded layout with back button

@@ -1,4 +1,4 @@
-# Kobe Dashboard
+# DOSA Dashboard
 
 Gnosis Safe vault dashboard w/ wallet-based auth (EIP-191 signature), vault stats (Current Value, Invested, Multiple, XIRR), contributors list, per-user donation history, and user profiles w/ Twitter OAuth + profile photo uploads.
 
@@ -331,15 +331,24 @@ Error responses:
 }
 ```
 
+## Design System
+
+- **Primary accent**: Electric orange (#ff5f1f) -- replaces previous gold/amber
+- **Positive states**: Neon green (#b8f53d)
+- **Secondary accent**: Cool violet (#8b7bf7)
+- **Cards**: Solid dark (#1a1a1a bg, #2a2a2a borders) -- replaces previous glass/backdrop-blur cards
+- **Shapes**: Rounded-full for badges/icons (was rounded-xl)
+- **Background**: Multi-color radial gradient (orange at 10%/20%, violet at 90%/80%, green at center)
+
 ## UI Components
 
-- **Landing Page**: Aurora background, connect wallet CTA
+- **Landing Page**: Multi-color radial gradient background (orange/violet/green), "DOSA" header, connect wallet CTA
 - **Dashboard Layout**: Sticky header (logo, chain indicator, address badge -> profile, logout)
-- **VaultStats**: 4 cards (Current Value, Invested, Multiple, XIRR) -- color-coded positive/negative
+- **VaultStats**: 4 solid dark cards (Current Value, Invested, Multiple, XIRR) -- color-coded positive/negative
 - **ContributorsList**: Paginated table (10/page) with Wallet, Invested, Current Value, Equity, Multiple -- rows clickable to user profile
 - **User Detail Page**: Profile (avatar, name, social links, edit button) + Stats (4 cards: Total Invested, Current Value, Multiple, XIRR) + Donations table (no Funding Round column)
 - **User Profile Edit**: Form with Twitter connect/disconnect, email, Solana wallet, photo upload
-- **TokenPieChart**: Recharts donut chart w/ gold/amber palette, groups <2% as "Others"
+- **TokenPieChart**: Recharts donut chart w/ electric orange/neon green/violet palette, groups <2% as "Others"
 - **TokenList**: Paginated table (5/page) -- Token, Price, Balance, Value, %
 - **NftGrid**: Paginated grid (10/page, 2x5, 420px min-height) with image fallbacks
 - **ConnectButton**: RainbowKit custom (shows connect/signing/error/retry states)

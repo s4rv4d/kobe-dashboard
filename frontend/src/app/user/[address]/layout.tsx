@@ -34,7 +34,7 @@ export default function UserLayout({
   return (
     <main className="min-h-screen">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-[#2a2a2a] bg-[#0a0a0a]">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -44,7 +44,7 @@ export default function UserLayout({
                   Back
                 </Button>
               </Link>
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ff5f1f]/10 border border-[#ff5f1f]/20">
                 <Image
                   src="/icon.png"
                   alt="Basketball icon"
@@ -75,10 +75,10 @@ export default function UserLayout({
               {/* Address badge */}
               {address && (
                 <div
-                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 cursor-pointer hover:bg-amber-500/20 transition-colors"
+                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#ff5f1f]/10 border border-[#ff5f1f]/20 cursor-pointer hover:bg-[#ff5f1f]/20 transition-colors"
                   onClick={() => router.push(`/user/${address}`)}
                 >
-                  <span className="font-mono text-xs text-amber-400">
+                  <span className="font-mono text-xs text-[#ff5f1f]">
                     {truncateAddress(address)}
                   </span>
                 </div>
@@ -102,7 +102,7 @@ export default function UserLayout({
       <div className="container mx-auto px-6 py-8">{children}</div>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 mt-16">
+      <footer className="border-t border-[#2a2a2a] mt-16">
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span className="font-mono opacity-50">v1.0</span>
@@ -120,12 +120,12 @@ function truncateAddress(address: string): string {
 function UserLayoutSkeleton() {
   return (
     <main className="min-h-screen">
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-[#2a2a2a] bg-[#0a0a0a]">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Skeleton className="h-8 w-16" />
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ff5f1f]/10 border border-[#ff5f1f]/20">
                 <Image
                   src="/icon.png"
                   alt="Basketball icon"

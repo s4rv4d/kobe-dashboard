@@ -17,7 +17,7 @@ export function TokenIcon({ symbol, logoUrl, size = 40 }: TokenIconProps) {
   if (!resolvedUrl || imgError) {
     return (
       <div
-        className="flex items-center justify-center rounded-full bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20 font-mono text-xs font-medium text-amber-400"
+        className="flex items-center justify-center rounded-full bg-[#ff5f1f]/10 border border-[#ff5f1f]/20 font-mono text-xs font-medium text-[#ff5f1f]"
         style={{ width: size, height: size }}
       >
         {symbol.slice(0, 2).toUpperCase()}

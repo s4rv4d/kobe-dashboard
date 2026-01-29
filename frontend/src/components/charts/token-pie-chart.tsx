@@ -10,15 +10,14 @@ import {
 import { formatUSD } from '@/lib/utils/format'
 import type { AllocationItem } from '@/types'
 
-// Luxury gold/amber palette
 const COLORS = [
-  '#fbbf24', // amber-400
-  '#f59e0b', // amber-500
-  '#d97706', // amber-600
-  '#b45309', // amber-700
-  '#92400e', // amber-800
-  '#78350f', // amber-900
-  '#525252', // neutral-600
+  '#ff5f1f', // electric-orange
+  '#8b7bf7', // cool-violet
+  '#b8f53d', // neon-green
+  '#ff8c5a', // lighter orange
+  '#a99bf7', // lighter violet
+  '#c8f76d', // lighter green
+  '#525252', // neutral-600 (Others)
 ]
 
 interface ChartData {
@@ -73,9 +72,9 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
   const data = payload[0].payload
 
   return (
-    <div className="glass-card px-3 py-2 text-sm">
+    <div className="solid-card px-3 py-2 text-sm">
       <p className="font-medium">{data.symbol}</p>
-      <p className="font-mono text-amber-400">{formatUSD(data.valueUsd)}</p>
+      <p className="font-mono text-[#ff5f1f]">{formatUSD(data.valueUsd)}</p>
       <p className="text-muted-foreground text-xs">
         {data.percentage.toFixed(1)}%
       </p>
@@ -106,7 +105,7 @@ export function TokenPieChart({ allocation }: TokenPieChartProps) {
   const grouped = groupSmallAllocations(allocation, 2)
 
   return (
-    <div className="glass-card p-5">
+    <div className="solid-card p-5">
       <div className="flex flex-col items-center">
         <ResponsiveContainer width="100%" height={200}>
           <PieChart>
@@ -134,7 +133,7 @@ export function TokenPieChart({ allocation }: TokenPieChartProps) {
         </ResponsiveContainer>
 
         {/* Custom Legend */}
-        <div className="w-full pt-4 border-t border-border/50 mt-2 space-y-2">
+        <div className="w-full pt-4 border-t border-[#2a2a2a] mt-2 space-y-2">
           {grouped.map((item, i) => (
             <LegendItem
               key={item.symbol}

@@ -4,7 +4,7 @@ export function StatsSkeleton() {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="glass-card p-5">
+        <div key={i} className="solid-card p-5">
           <div className="flex items-start justify-between">
             <div className="space-y-3">
               <Skeleton className="h-3 w-16 bg-white/5" />
@@ -20,7 +20,7 @@ export function StatsSkeleton() {
 
 export function ChartSkeleton() {
   return (
-    <div className="glass-card p-5">
+    <div className="solid-card p-5">
       <div className="flex flex-col items-center">
         <Skeleton className="h-[200px] w-[200px] rounded-full bg-white/5" />
         <div className="w-full pt-4 border-t border-border/50 mt-6 space-y-2">
@@ -40,7 +40,7 @@ export function ChartSkeleton() {
 export function TokenListSkeleton() {
   return (
     <div className="space-y-4">
-      <div className="glass-card overflow-hidden">
+      <div className="solid-card overflow-hidden">
         <div className="p-4 border-b border-border/50">
           <div className="flex items-center gap-4">
             {["Token", "Price", "Balance", "Value", "%"].map((_, i) => (
@@ -82,7 +82,7 @@ export function NftGridSkeleton() {
       {/* Fixed height grid container - 2 rows */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 min-h-[420px]">
         {Array.from({ length: 10 }).map((_, i) => (
-          <div key={i} className="glass-card overflow-hidden">
+          <div key={i} className="solid-card overflow-hidden">
             <Skeleton className="aspect-square bg-white/5" />
             <div className="p-4 space-y-2">
               <Skeleton className="h-4 w-full bg-white/5" />
@@ -104,7 +104,7 @@ export function NftGridSkeleton() {
 export function ContributorsListSkeleton() {
   return (
     <div className="space-y-4">
-      <div className="glass-card overflow-hidden">
+      <div className="solid-card overflow-hidden">
         <div className="p-4 border-b border-border/50">
           <div className="flex items-center gap-4">
             {["Wallet", "Invested", "Current Value", "Equity", "Multiple"].map(

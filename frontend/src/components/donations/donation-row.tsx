@@ -8,7 +8,7 @@ interface DonationRowProps {
 
 export function DonationRow({ donation }: DonationRowProps) {
   return (
-    <TableRow className="border-b border-border/30 hover:bg-white/[0.02] transition-colors">
+    <TableRow className="border-b border-[#2a2a2a]/50 hover:bg-white/[0.02] transition-colors">
       <TableCell className="py-4">
         <span className="text-sm text-muted-foreground">
           {formatDate(donation.transactionDate)}
@@ -18,7 +18,7 @@ export function DonationRow({ donation }: DonationRowProps) {
         {donation.contributionAmount.toFixed(4)}
       </TableCell>
       <TableCell className="text-right">
-        <span className="inline-flex px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 text-xs font-mono uppercase">
+        <span className="inline-flex px-2 py-0.5 rounded-md bg-[#8b7bf7]/10 text-[#8b7bf7] text-xs font-mono uppercase">
           {donation.currency}
         </span>
       </TableCell>

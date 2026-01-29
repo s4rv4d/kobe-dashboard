@@ -1,11 +1,17 @@
 import type { Metadata } from 'next'
-import { Outfit, JetBrains_Mono } from 'next/font/google'
+import { Syne, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import { WalletProvider } from '@/providers/wallet-provider'
 import { AuthProvider } from '@/providers/auth-provider'
 import './globals.css'
 
-const outfit = Outfit({
+const syne = Syne({
   variable: '--font-display',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+})
+
+const spaceGrotesk = Space_Grotesk({
+  variable: '--font-body',
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
 })
@@ -17,8 +23,8 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Kobe Vault',
-  description: 'Gnosis Safe vault dashboard',
+  title: 'DOSA',
+  description: 'A collective fund for the assets that define generations',
 }
 
 export default function RootLayout({
@@ -29,9 +35,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${outfit.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${syne.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
       >
-        <div className="noise-overlay" />
+        <div className="bg-gradient" aria-hidden="true" />
+        <div className="noise-overlay" aria-hidden="true" />
         <WalletProvider>
           <AuthProvider>{children}</AuthProvider>
         </WalletProvider>

@@ -28,10 +28,10 @@ export function TokenList({ tokens }: TokenListProps) {
 
   return (
     <div className="space-y-4">
-      <div className="glass-card overflow-hidden">
+      <div className="solid-card overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-b border-border/50 hover:bg-transparent">
+            <TableRow className="border-b border-[#2a2a2a] hover:bg-transparent">
               <TableHead className="text-muted font-medium">Token</TableHead>
               <TableHead className="text-right text-muted font-medium">
                 Price

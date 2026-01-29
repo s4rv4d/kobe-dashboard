@@ -181,6 +181,8 @@ export async function apiClient<T>(endpoint: string): Promise<T> {
 **Completed:**
 - Backend NestJS 11 setup with ConfigModule + Zod v4 validation
 - Frontend Next.js 16 with shadcn/ui (New York style, Zinc base)
+- Design system: DOSA Culture Fund (electric orange/neon green/violet palette, solid cards)
+- Fonts: `--font-body` (body text) and `--font-display` (headings)
 - Redis integration via @songkeys/nestjs-redis
 - React Query provider setup (embedded in WalletProvider)
 - API client with success/error handling (GET/POST/PUT/DELETE/Upload)

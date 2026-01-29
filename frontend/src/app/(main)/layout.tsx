@@ -34,11 +34,11 @@ export default function MainLayout({
   return (
     <main className="min-h-screen">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-[#2a2a2a] bg-[#0a0a0a]">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ff5f1f]/10 border border-[#ff5f1f]/20">
                 <Image
                   src="/icon.png"
                   alt="Basketball icon"
@@ -49,7 +49,7 @@ export default function MainLayout({
               </div>
               <div>
                 <h1 className="text-xl font-semibold tracking-tight">
-                  DOSA VC
+                  DOSA
                 </h1>
                 <p className="text-xs text-muted-foreground">824</p>
               </div>
@@ -68,10 +68,10 @@ export default function MainLayout({
               {/* Address badge */}
               {address && (
                 <div
-                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 cursor-pointer hover:bg-amber-500/20 transition-colors"
+                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#ff5f1f]/10 border border-[#ff5f1f]/20 cursor-pointer hover:bg-[#ff5f1f]/20 transition-colors"
                   onClick={() => router.push(`/user/${address}`)}
                 >
-                  <span className="font-mono text-xs text-amber-400">
+                  <span className="font-mono text-xs text-[#ff5f1f]">
                     {truncateAddress(address)}
                   </span>
                 </div>
@@ -91,7 +91,7 @@ export default function MainLayout({
         </div>
 
         {/* Navigation Tabs */}
-        <div className="container mx-auto px-6 border-t border-border/30">
+        <div className="container mx-auto px-6 border-t border-[#2a2a2a]">
           <NavTabs />
         </div>
       </header>
@@ -100,7 +100,7 @@ export default function MainLayout({
       <div className="container mx-auto px-6 py-8">{children}</div>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 mt-16">
+      <footer className="border-t border-[#2a2a2a] mt-16">
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span className="font-mono opacity-50">v1.0</span>
@@ -118,11 +118,11 @@ function truncateAddress(address: string): string {
 function MainSkeleton() {
   return (
     <main className="min-h-screen">
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-[#2a2a2a] bg-[#0a0a0a]">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ff5f1f]/10 border border-[#ff5f1f]/20">
                 <Image
                   src="/icon.png"
                   alt="Basketball icon"
@@ -140,7 +140,7 @@ function MainSkeleton() {
           </div>
         </div>
         {/* Skeleton tabs */}
-        <div className="container mx-auto px-6 border-t border-border/30 py-2.5">
+        <div className="container mx-auto px-6 border-t border-[#2a2a2a] py-2.5">
           <div className="flex items-center gap-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <Skeleton key={i} className="h-5 w-16 bg-white/5" />

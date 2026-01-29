@@ -35,10 +35,10 @@ export function DonationsList({ donations }: DonationsListProps) {
   }
 
   return (
-    <div className="rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden">
+    <div className="solid-card overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow className="border-b border-border/50 hover:bg-transparent">
+          <TableRow className="border-b border-[#2a2a2a] hover:bg-transparent">
             <TableHead className="text-xs font-medium text-muted-foreground">
               Date
             </TableHead>

@@ -24,7 +24,7 @@ import {
 
 function ErrorMessage({ message }: { message: string }) {
   return (
-    <div className="glass-card flex items-center gap-3 p-4 border-red-500/20">
+    <div className="solid-card flex items-center gap-3 p-4 border-red-500/20">
       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-500/10">
         <AlertCircle className="h-4 w-4 text-red-400" />
       </div>
@@ -42,8 +42,8 @@ function SectionHeader({
 }) {
   return (
     <div className="flex items-center gap-3 mb-5">
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10">
-        <Icon className="h-4 w-4 text-amber-400" />
+      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#ff5f1f]/10">
+        <Icon className="h-4 w-4 text-[#ff5f1f]" />
       </div>
       <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
     </div>
@@ -123,7 +123,7 @@ export function PortfolioContent() {
               ) : portfolio?.allocation?.length ? (
                 <TokenPieChart allocation={portfolio.allocation} />
               ) : (
-                <div className="glass-card p-8 text-center text-muted-foreground text-sm">
+                <div className="solid-card p-8 text-center text-muted-foreground text-sm">
                   No allocation data
                 </div>
               )}
@@ -141,7 +141,7 @@ export function PortfolioContent() {
               ) : tokensData?.tokens?.length ? (
                 <TokenList tokens={tokensData.tokens} />
               ) : (
-                <div className="glass-card p-8 text-center text-muted-foreground text-sm">
+                <div className="solid-card p-8 text-center text-muted-foreground text-sm">
                   No tokens found
                 </div>
               )}

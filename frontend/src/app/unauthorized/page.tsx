@@ -23,7 +23,7 @@ export default function UnauthorizedPage() {
           </p>
         </div>
 
-        <div className="glass-card p-4 text-left space-y-2">
+        <div className="solid-card p-4 text-left space-y-2">
           <p className="text-sm text-muted-foreground">
             If you believe this is an error, please contact the vault
             administrator to have your address added to the allowlist.

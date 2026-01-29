@@ -22,7 +22,7 @@ export function ContributorRow({ contributor }: ContributorRowProps) {
 
   return (
     <TableRow
-      className="border-b border-border/30 hover:bg-white/[0.02] transition-colors cursor-pointer"
+      className="border-b border-[#2a2a2a]/50 hover:bg-white/[0.02] transition-colors cursor-pointer"
       onClick={handleClick}
     >
       <TableCell className="py-4">
@@ -37,7 +37,7 @@ export function ContributorRow({ contributor }: ContributorRowProps) {
         {formatUSD(contributor.currentValue)}
       </TableCell>
       <TableCell className="text-right">
-        <span className="inline-flex px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 text-xs font-mono">
+        <span className="inline-flex px-2 py-0.5 rounded-md bg-[#8b7bf7]/10 text-[#8b7bf7] text-xs font-mono">
           {contributor.equityPercent.toFixed(1)}%
         </span>
       </TableCell>
@@ -45,7 +45,7 @@ export function ContributorRow({ contributor }: ContributorRowProps) {
         <span
           className={`inline-flex px-2 py-0.5 rounded-md text-xs font-mono ${
             contributor.multiple >= 1
-              ? 'bg-emerald-500/10 text-emerald-400'
+              ? 'bg-[#b8f53d]/10 text-[#b8f53d]'
               : 'bg-red-500/10 text-red-400'
           }`}
         >

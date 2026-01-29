@@ -14,7 +14,7 @@ export function NftCard({ nft }: NftCardProps) {
   const [imgError, setImgError] = useState(false)
 
   return (
-    <div className="glass-card overflow-hidden group cursor-pointer">
+    <div className="solid-card overflow-hidden group cursor-pointer">
       {/* Image Container */}
       <div className="aspect-square relative bg-black/20 overflow-hidden">
         {!imgError && nft.imageUrl ? (
@@ -39,9 +39,9 @@ export function NftCard({ nft }: NftCardProps) {
         {/* Floor Price Badge */}
         {nft.floorPriceEth && (
           <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="glass-card px-2 py-1.5 text-xs font-mono flex items-center justify-between">
+            <div className="solid-card px-2 py-1.5 text-xs font-mono flex items-center justify-between">
               <span className="text-muted-foreground">Floor</span>
-              <span className="text-amber-400">{nft.floorPriceEth.toFixed(3)} ETH</span>
+              <span className="text-[#ff5f1f]">{nft.floorPriceEth.toFixed(3)} ETH</span>
             </div>
           </div>
         )}
@@ -49,7 +49,7 @@ export function NftCard({ nft }: NftCardProps) {
 
       {/* Content */}
       <div className="p-4 space-y-1">
-        <p className="font-medium truncate group-hover:text-amber-400 transition-colors">
+        <p className="font-medium truncate group-hover:text-[#ff5f1f] transition-colors">
           {nft.name}
         </p>
         <p className="text-xs text-muted-foreground truncate">

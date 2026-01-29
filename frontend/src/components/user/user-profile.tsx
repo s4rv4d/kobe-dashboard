@@ -32,7 +32,7 @@ export function UserProfile({
   // If editing and we have a profile, show edit form
   if (isEditing) {
     return (
-      <div className="p-6 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm">
+      <div className="p-6 rounded-2xl bg-[#1a1a1a] border border-[#2a2a2a]">
         <UserProfileEdit
           profile={profile || undefined}
           onCancel={() => setIsEditing(false)}

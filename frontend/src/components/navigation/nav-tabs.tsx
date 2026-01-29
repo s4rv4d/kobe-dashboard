@@ -45,13 +45,13 @@ export function NavTabs() {
             className={cn(
               'relative px-4 py-2.5 text-sm font-medium whitespace-nowrap transition-colors',
               isActive
-                ? 'text-amber-400'
+                ? 'text-[#ff5f1f]'
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
             {tab.label}
             {isActive && (
-              <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-amber-400 rounded-full" />
+              <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#ff5f1f] rounded-full" />
             )}
           </Link>
         )
